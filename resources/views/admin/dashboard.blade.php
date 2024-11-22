@@ -1,6 +1,10 @@
 @extends('layouts.layouts-admin')
 
 @section('content')
+    @if (session('success'))
+        <x-notif-sukses> {{ session('success') }}</x-notif-sukses>
+    @endif
+
     <h2 class="text-4xl font-extrabold dark:text-white">Payments tool for companies</h2>
     <p class="my-4 text-lg text-gray-500">Start developing with an open-source library of over 450+ UI components, sections,
         and pages built with the utility classes from Tailwind CSS and designed in Figma.</p>

@@ -3,6 +3,10 @@
 @section('title', 'E-Commerce')
 
 @section('content')
+    @if (session('success'))
+        <x-notif-sukses> {{ session('success') }}</x-notif-sukses>
+    @endif
+
     <h1
         class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         We invest in the world’s potential</h1>

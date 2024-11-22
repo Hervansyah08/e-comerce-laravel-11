@@ -101,7 +101,7 @@ class AuthController extends Controller
                 // Fungsi ini akan mengarahkan pengguna ke halaman yang sebelumnya mereka coba akses sebelum login, kayak sebelumnya berada di route dasboard
                 // Jika tidak ada halaman sebelumnya, pengguna diarahkan ke redirectTo
                 return redirect()->intended($redirectTo)
-                    ->with('success', 'Welcome back, ' . $user->name . '!'); // memberikan pesan
+                    ->with('success', 'Welcome back, ' . $user->name . ' !'); // memberikan pesan
             }
 
             // untuk memberikan pesan error khusus di bagian field email ketika proses autentikasi gagal.
