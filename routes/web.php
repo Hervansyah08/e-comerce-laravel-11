@@ -26,8 +26,8 @@ Route::prefix('categories')->group(function () {
         ->name('admin.categories.index');
     Route::post('/', [CategoryController::class, 'store'])
         ->name('admin.categories.store');
-    // Route::put('/{category}', [CategoryController::class, 'update'])
-    //     ->name('admin.categories.update');
+    Route::put('/{category}', [CategoryController::class, 'update'])
+        ->name('admin.categories.update');
     // Route::delete('/{category}', [CategoryController::class, 'destroy'])
     //     ->name('admin.categories.destroy');
 });
