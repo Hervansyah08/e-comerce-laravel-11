@@ -2,7 +2,13 @@
 
 @section('content')
     @if (session('success'))
-        <x-notif-sukses> {{ session('success') }}</x-notif-sukses>
+        <div class="-translate-y-9">
+            <x-notif-sukses> {{ session('success') }}</x-notif-sukses>
+        </div>
+    @elseif(session('error'))
+        <div class="-translate-y-9">
+            <x-notif-gagal>{{ session('error') }}</x-notif-gagal>
+        </div>
     @endif
 
     <!-- Header Section -->
@@ -18,7 +24,8 @@
     <div class="relative overflow-x-auto">
         {{-- serach --}}
         <form class="max-w-md py-6">
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <label for="default-search"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -29,7 +36,7 @@
                 </div>
                 <input type="search" id="default-search"
                     class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search Nama dan Deskripsi" required />
+                    placeholder="Search Nama dan Deskripsi" name="search" />
                 <button type="submit"
                     class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
             </div>
@@ -116,11 +123,11 @@
                         <div class="col-span-2">
                             <label for="name"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                            <input type="text" name="name" id="name"
+                            <input type="text" name="name" id="name" value="{{ old('name') }}"
                                 class="@error('name') border-red-500 @enderror bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Type product name" required="">
+                                placeholder="Type product name">
                             @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="col-span-2">
@@ -128,9 +135,9 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
                             <textarea id="description" rows="4" name="description"
                                 class="@error('description') border-red-500 @enderror block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Write product description here"></textarea>
+                                placeholder="Write product description here">{{ old('description') }}</textarea>
                             @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
