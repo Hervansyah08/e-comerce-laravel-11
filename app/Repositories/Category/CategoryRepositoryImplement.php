@@ -28,10 +28,7 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
     public function getAll()
     {
         try {
-            // if ($request->page != null) {
-            //     Cache::forget('allcategory'); // Hapus cache jika ada parameter pencarian atau paginasi
-            // }
-            $categories = Cache::remember('allcategory', 90, function () {
+            $categories = Cache::remember('allcategory', 300, function () {
                 return $this->model::query() // query ini sebuah kuas yang akan kamu gunakan untuk "melukis" sebuah permintaan (query) ke database.
                     ->withCount('products') // menghitung jumlah produk
                     ->latest()
@@ -76,21 +73,22 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
     {
         DB::beginTransaction();
         try {
-            // ini mengecek apakah id yang dihapus memiliki produk yang terkait
-            // jika iya akan menampilkan pesan error dibawah ini
-            if ($id->products()->exists()) {
-                throw new Exception('Tidak dapat menghapus kategori dengan produk terkait.');
+            $categoryid = $this->model->findOrFail($id);
+            // Mengecek apakah kategori memiliki produk yang terkait
+            if ($categoryid->products()->exists()) {
+                // Lemparkan exception dengan pesan spesifik
+                throw new Exception('Tidak dapat menghapus kategori karena ada produk terkait.');
             }
-            // Temukan model berdasarkan ID
-            $category = $this->model->findOrFail($id)->delete();
+            $categoryid->delete();
             DB::commit();
-            return $category;  // Kembalikan model yang sudah diperbarui
+            return $categoryid;
         } catch (Exception $e) {
             DB::rollBack();
             Log::warning("Gagal Hapus Kategori ID $id: " . $e->getMessage());
-            throw new Exception("Terjadi kesalahan saat hapus Kategori ID $id");
+            throw $e;  // Lemparkan kembali exception yang sama
         }
     }
+
     public function search($query)
     {
         try {

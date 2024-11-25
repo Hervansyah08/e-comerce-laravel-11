@@ -20,6 +20,9 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
+            if ($request->page != null) {
+                Cache::forget('allcategory'); // Hapus cache jika ada parameter pencarian atau paginasi
+            }
             $categories = $this->categoryRepository->getAll();
             return view('admin.category', compact('categories'));
         } catch (Exception $e) {
@@ -69,10 +72,9 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus');
         } catch (Exception $e) {
             Log::error("Kesalahan di controller: " . $e->getMessage());
-            return back()->with('error', 'Gagal Menghapus Kategori: ' . $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
-
     public function search(Request $request)
     {
         try {
