@@ -20,8 +20,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
-
-            $categories = $this->categoryRepository->getAll($request);
+            $categories = $this->categoryRepository->getAll();
             return view('admin.category', compact('categories'));
         } catch (Exception $e) {
             Log::error("Kesalahan di controller" . $e->getMessage());
@@ -60,6 +59,29 @@ class CategoryController extends Controller
             Log::error("Kesalahan di controller: " . $e->getMessage());
             return back()->with('error', 'Gagal Mengubah Kategori: ' . $e->getMessage())
                 ->withInput();
+        }
+    }
+
+    public function destroy(Category $category)
+    {
+        try {
+            $this->categoryRepository->delete($category->id);
+            return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus');
+        } catch (Exception $e) {
+            Log::error("Kesalahan di controller: " . $e->getMessage());
+            return back()->with('error', 'Gagal Menghapus Kategori: ' . $e->getMessage());
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->input('search');
+            $categories = $this->categoryRepository->search($query);
+            return view('admin.category', compact('categories'));
+        } catch (Exception $e) {
+            Log::error("Kesalahan di controller search" . $e->getMessage());
+            return back()->with('error', 'Failed to load categories: ' . $e->getMessage());
         }
     }
 }

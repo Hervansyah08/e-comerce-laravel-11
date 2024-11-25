@@ -28,8 +28,10 @@ Route::prefix('categories')->group(function () {
         ->name('admin.categories.store');
     Route::put('/{category}', [CategoryController::class, 'update'])
         ->name('admin.categories.update');
-    // Route::delete('/{category}', [CategoryController::class, 'destroy'])
-    //     ->name('admin.categories.destroy');
+    Route::delete('/{category}', [CategoryController::class, 'destroy'])
+        ->name('admin.categories.destroy');
+    Route::get('/search', [CategoryController::class, 'search'])
+        ->name('admin.categories.search');
 });
 Route::get('/dashboard', function () {
     return view('admin.dashboard');

@@ -25,25 +25,15 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
         $this->model = $model;
     }
 
-    public function getAll(Request $request)
+    public function getAll()
     {
         try {
-            if ($request->page != null) {
-                Cache::forget('allcategory');
-            }
-            $categories = Cache::remember('allcategory', 60, function () use ($request) {
+            // if ($request->page != null) {
+            //     Cache::forget('allcategory'); // Hapus cache jika ada parameter pencarian atau paginasi
+            // }
+            $categories = Cache::remember('allcategory', 90, function () {
                 return $this->model::query() // query ini sebuah kuas yang akan kamu gunakan untuk "melukis" sebuah permintaan (query) ke database.
                     ->withCount('products') // menghitung jumlah produk
-                    // when ini untuk kondisi yang lebih kompleks
-                    // $request->filled('search') Mengecek apakah parameter search di request memiliki nilai
-                    ->when($request->filled('search'), function ($query) use ($request) {
-                        $search = $request->search; // untuk mengambil nilai dari input pengguna (dikirim melalui HTTP request) dengan nama parameter search
-                        $query->where(function ($q) use ($search) {
-                            $q->where('name', 'like', "%{$search}%")
-                                ->orWhere('description', 'like', "%{$search}%")
-                                ->orWhere('slug', 'like', "%{$search}%");
-                        });
-                    })
                     ->latest()
                     ->paginate(5)
                     ->withQueryString(); // Ini penting untuk mempertahankan parameter search saat paginasi
@@ -82,5 +72,45 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
         }
     }
 
-    public function delete($id) {}
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            // ini mengecek apakah id yang dihapus memiliki produk yang terkait
+            // jika iya akan menampilkan pesan error dibawah ini
+            if ($id->products()->exists()) {
+                throw new Exception('Tidak dapat menghapus kategori dengan produk terkait.');
+            }
+            // Temukan model berdasarkan ID
+            $category = $this->model->findOrFail($id)->delete();
+            DB::commit();
+            return $category;  // Kembalikan model yang sudah diperbarui
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::warning("Gagal Hapus Kategori ID $id: " . $e->getMessage());
+            throw new Exception("Terjadi kesalahan saat hapus Kategori ID $id");
+        }
+    }
+    public function search($query)
+    {
+        try {
+            if (empty($query)) {
+                $category = $this->model::latest()
+                    ->withCount('products')
+                    ->paginate(5)
+                    ->withQueryString();
+            } else {
+                $category = $this->model::where('name', 'like', "%" . $query . "%")
+                    ->orWhere('description', 'like', "%" . $query . "%")
+                    ->withCount('products')
+                    ->paginate(5)
+                    ->withQueryString();
+            }
+            return $category;
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::warning("Gagal Search Kategori $query : " . $e->getMessage());
+            throw new Exception("Terjadi kesalahan saat search Kategori $query");
+        }
+    }
 }

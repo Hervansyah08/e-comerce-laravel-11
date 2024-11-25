@@ -23,7 +23,7 @@
 
     <div class="relative overflow-x-auto">
         {{-- serach --}}
-        <form class="max-w-md py-6">
+        <form class="max-w-md py-6" action="{{ route('admin.categories.search') }}" method="GET">
             <label for="default-search"
                 class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
@@ -97,48 +97,6 @@
                             </div>
                         </td>
                     </tr>
-
-                    <!-- Modal Edit Kategori -->
-                    {{-- <div id="updateModal-{{ $category->id }}" tabindex="-1" aria-hidden="true"
-                        class="fixed inset-0 flex items-center justify-center z-50 hidden overflow-y-auto bg-gray-800 bg-opacity-50">
-                        <div class="relative w-full max-w-md p-4 bg-white rounded-lg shadow-lg">
-                            <button type="button" class="absolute top-0 right-0 p-2 text-gray-400"
-                                data-modal-hide="updateModal-{{ $category->id }}">
-                                <span class="sr-only">Close</span>
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M6.293 4.293a1 1 0 011.414 0L10 6.586l2.293-2.293a1 1 0 111.414 1.414L11.414 8l2.293 2.293a1 1 0 01-1.414 1.414L10 9.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 8 6.293 5.707a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-
-                            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-
-                                <div class="mb-4">
-                                    <label for="name" class="block text-gray-700">Nama Kategori</label>
-                                    <input type="text" id="name" name="name"
-                                        value="{{ old('name', $category->name) }}"
-                                        class="mt-2 p-2 w-full border border-gray-300 rounded-md" required>
-                                    @error('name')
-                                        <div class="text-red-500 text-sm">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="description" class="block text-gray-700">Deskripsi Kategori</label>
-                                    <textarea id="description" name="description" class="mt-2 p-2 w-full border border-gray-300 rounded-md">{{ old('description', $category->description) }}</textarea>
-                                </div>
-
-                                <div class="flex justify-end mt-4">
-                                    <button type="submit"
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-md">Update</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div> --}}
                 @empty
                     <tr>
                         <td colspan="5" class="text-center py-4">
@@ -229,7 +187,7 @@
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Buat Kategori Produk
+                            Edit Kategori {{ $category->name }}
                         </h3>
                         <button type="button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
