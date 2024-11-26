@@ -37,8 +37,6 @@ Route::prefix('categories')->group(function () {
         ->name('admin.categories.update');
     Route::delete('/{category}', [CategoryController::class, 'destroy'])
         ->name('admin.categories.destroy');
-    Route::get('/search', [CategoryController::class, 'search'])
-        ->name('admin.categories.search');
 });
 
 // Products Management
@@ -51,6 +49,4 @@ Route::prefix('products')->group(function () {
         ->name('admin.products.update');
     Route::delete('/{product}', [ProductController::class, 'destroy'])
         ->name('admin.products.destroy');
-    Route::get('/search', [CategoryController::class, 'search'])
-        ->name('admin.products.search');
 });

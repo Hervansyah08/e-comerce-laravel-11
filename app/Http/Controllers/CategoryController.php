@@ -20,10 +20,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            if ($request->page != null) {
-                Cache::forget('allcategory'); // Hapus cache jika ada parameter pencarian atau paginasi
-            }
-            $categories = $this->categoryRepository->getAll();
+            $categories = $this->categoryRepository->getAll($request);
             return view('admin.category', compact('categories'));
         } catch (Exception $e) {
             Log::error("Kesalahan di controller" . $e->getMessage());
@@ -73,17 +70,6 @@ class CategoryController extends Controller
         } catch (Exception $e) {
             Log::error("Kesalahan di controller: " . $e->getMessage());
             return back()->with('error', $e->getMessage());
-        }
-    }
-    public function search(Request $request)
-    {
-        try {
-            $query = $request->input('search');
-            $categories = $this->categoryRepository->search($query);
-            return view('admin.category', compact('categories'));
-        } catch (Exception $e) {
-            Log::error("Kesalahan di controller search" . $e->getMessage());
-            return back()->with('error', 'Failed to load categories: ' . $e->getMessage());
         }
     }
 }

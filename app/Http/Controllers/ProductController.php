@@ -19,9 +19,6 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            if ($request->page != null) {
-                Cache::forget('allproduct'); // Hapus cache jika ada parameter pencarian atau paginasi
-            }
             $products = $this->productRepository->getProducts();
             $categories = $this->productRepository->getCategories();
 

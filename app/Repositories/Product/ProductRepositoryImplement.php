@@ -27,12 +27,10 @@ class ProductRepositoryImplement extends Eloquent implements ProductRepository
     public function getProducts()
     {
         try {
-            return Cache::remember('allproduct', 300, function () {
-                return $this->model::query()
-                    ->latest()
-                    ->paginate(5)
-                    ->withQueryString();
-            });
+            return $this->model::query()
+                ->latest()
+                ->paginate(5)
+                ->withQueryString();
         } catch (Exception $e) {
             Log::warning("Gagal mengambil data produk: " . $e->getMessage());
             throw new Exception("Terjadi kesalahan saat mengambil data produk.");
@@ -42,7 +40,7 @@ class ProductRepositoryImplement extends Eloquent implements ProductRepository
     public function getCategories()
     {
         try {
-            return Cache::remember('products_categories', 300, function () {
+            return Cache::remember('all_categories', 60 * 60, function () {
                 return Category::all();
             });
         } catch (Exception $e) {

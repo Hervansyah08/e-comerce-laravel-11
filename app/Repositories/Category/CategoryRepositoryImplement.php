@@ -25,17 +25,23 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
         $this->model = $model;
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
         try {
-            $categories = Cache::remember('allcategory', 300, function () {
-                return $this->model::query() // query ini sebuah kuas yang akan kamu gunakan untuk "melukis" sebuah permintaan (query) ke database.
-                    ->withCount('products') // menghitung jumlah produk
-                    ->latest()
-                    ->paginate(5)
-                    ->withQueryString(); // Ini penting untuk mempertahankan parameter search saat paginasi
-            });
-            return  $categories;
+            return $this->model::query() // query ini sebuah kuas yang akan kamu gunakan untuk "melukis" sebuah permintaan (query) ke database.
+                ->withCount('products') // menghitung jumlah produk
+                // when ini untuk kondisi yang lebih kompleks
+                // $request->filled('search') Mengecek apakah parameter search di request memiliki nilai
+                ->when($request->filled('search'), function ($query) use ($request) {
+                    $search = $request->search; // untuk mengambil nilai dari input pengguna (dikirim melalui HTTP request) dengan nama parameter search
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('description', 'like', "%{$search}%");
+                    });
+                })
+                ->latest()
+                ->paginate(5)
+                ->withQueryString(); // Ini penting untuk mempertahankan parameter search saat paginasi
         } catch (Exception $e) {
             Log::warning("Gagal mengambil data Kategori:" . $e->getMessage());
             throw new Exception("Terjadi kesalahan saat mengambil semua data Kategori");
@@ -86,29 +92,6 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
             DB::rollBack();
             Log::warning("Gagal Hapus Kategori ID $id: " . $e->getMessage());
             throw $e;  // Lemparkan kembali exception yang sama
-        }
-    }
-
-    public function search($query)
-    {
-        try {
-            if (empty($query)) {
-                $category = $this->model::latest()
-                    ->withCount('products')
-                    ->paginate(5)
-                    ->withQueryString();
-            } else {
-                $category = $this->model::where('name', 'like', "%" . $query . "%")
-                    ->orWhere('description', 'like', "%" . $query . "%")
-                    ->withCount('products')
-                    ->paginate(5)
-                    ->withQueryString();
-            }
-            return $category;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::warning("Gagal Search Kategori $query : " . $e->getMessage());
-            throw new Exception("Terjadi kesalahan saat search Kategori $query");
         }
     }
 }
