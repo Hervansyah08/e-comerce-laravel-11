@@ -53,8 +53,6 @@
         </div>
     @endif
 
-
-
     <!-- Header Section -->
     <div class="flex flex-wrap justify-between align-items-center">
         <h2 class="text-4xl font-bold  dark:text-white">Daftar Kategori Produk</h2>
@@ -114,7 +112,9 @@
                             {{ Str::limit($category->description, 50) }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $category->products_count }} Products
+                            <span
+                                class="bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
+                                {{ $category->products_count }} Products</span>
                         </td>
                         <td class="px-6 py-4">
                             <div class="inline-flex rounded-md shadow-sm" role="group">

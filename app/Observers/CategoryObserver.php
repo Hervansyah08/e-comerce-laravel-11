@@ -13,6 +13,7 @@ class CategoryObserver
     public function created(Category $category): void
     {
         Cache::forget('allcategory');
+        Cache::forget('products_categories');
     }
 
     /**
@@ -21,6 +22,7 @@ class CategoryObserver
     public function updated(Category $category): void
     {
         Cache::forget('allcategory');
+        Cache::forget('products_categories');
     }
 
     /**
@@ -29,6 +31,7 @@ class CategoryObserver
     public function deleted(Category $category): void
     {
         Cache::forget('allcategory');
+        Cache::forget('products_categories');
     }
 
     /**

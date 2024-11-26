@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
@@ -19,6 +20,12 @@ Route::post('/auth/logout', [AuthController::class, 'logout'])
     ->name('auth.logout')
     ->middleware('auth');
 
+
+
+Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+
 // Categories Management
 // jadi nanti semua route di dalam group ini memiliki awal categories
 Route::prefix('categories')->group(function () {
@@ -33,6 +40,17 @@ Route::prefix('categories')->group(function () {
     Route::get('/search', [CategoryController::class, 'search'])
         ->name('admin.categories.search');
 });
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+
+// Products Management
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])
+        ->name('admin.products.index');
+    Route::post('/', [ProductController::class, 'store'])
+        ->name('admin.products.store');
+    Route::put('/{product}', [ProductController::class, 'update'])
+        ->name('admin.products.update');
+    Route::delete('/{product}', [ProductController::class, 'destroy'])
+        ->name('admin.products.destroy');
+    Route::get('/search', [CategoryController::class, 'search'])
+        ->name('admin.products.search');
+});
