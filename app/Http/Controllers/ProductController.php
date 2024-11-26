@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            $products = $this->productRepository->getProducts();
+            $products = $this->productRepository->getProducts($request);
             $categories = $this->productRepository->getCategories();
 
             return view('admin.product', compact('products', 'categories'));

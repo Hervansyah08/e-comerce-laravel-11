@@ -67,7 +67,8 @@
     <div class="relative overflow-x-auto">
         {{-- serach --}}
         <div class="mb-4">
-            <form action="" method="GET" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <form action="{{ route('admin.products.index') }}" method="GET"
+                class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <!-- Dropdown kategori -->
                 <div>
                     <label for="category" class="sr-only">Kategori</label>
@@ -75,8 +76,8 @@
                         class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         <option value="">Semua Kategori</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->slug }}"
-                                {{ request('category') == $category->slug ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}"
+                                {{ request('category') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -100,6 +101,7 @@
                 </div>
             </form>
         </div>
+
 
         {{-- tabel --}}
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
