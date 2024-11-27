@@ -128,6 +128,28 @@ class ProductController extends Controller
         }
     }
 
+    public function destroy(Product $product)
+    {
+        try {
+            DB::beginTransaction();
+
+            // mengecek apaka produk ada yang terkait dengan pesanan
+            if ($product->orderItems()->exists()) {
+                throw new Exception('Tidak dapat menghapus produk dengan pesanan terkait.');
+            }
+
+            $product->delete();
+
+            DB::commit();
+            return redirect()->route('admin.products.index')
+                ->with('success', 'Produk berhasil dihapus');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::warning("Gagal menghapus produk :" . $e->getMessage());
+            return back()->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
+        }
+    }
+
     private function cleanPrice($price)
     {
         // menghapus semua karakter selain angka (0-9) dan titik (.), lalu mengubah hasilnya menjadi tipe data float.

@@ -20,33 +20,33 @@ Route::post('/auth/logout', [AuthController::class, 'logout'])
     ->name('auth.logout')
     ->middleware('auth');
 
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 
+    // Categories Management
+    // jadi nanti semua route di dalam group ini memiliki awal categories
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])
+            ->name('admin.categories.index');
+        Route::post('/', [CategoryController::class, 'store'])
+            ->name('admin.categories.store');
+        Route::put('/{category}', [CategoryController::class, 'update'])
+            ->name('admin.categories.update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])
+            ->name('admin.categories.destroy');
+    });
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
-
-// Categories Management
-// jadi nanti semua route di dalam group ini memiliki awal categories
-Route::prefix('categories')->group(function () {
-    Route::get('/', [CategoryController::class, 'index'])
-        ->name('admin.categories.index');
-    Route::post('/', [CategoryController::class, 'store'])
-        ->name('admin.categories.store');
-    Route::put('/{category}', [CategoryController::class, 'update'])
-        ->name('admin.categories.update');
-    Route::delete('/{category}', [CategoryController::class, 'destroy'])
-        ->name('admin.categories.destroy');
-});
-
-// Products Management
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])
-        ->name('admin.products.index');
-    Route::post('/', [ProductController::class, 'store'])
-        ->name('admin.products.store');
-    Route::put('/{product}', [ProductController::class, 'update'])
-        ->name('admin.products.update');
-    Route::delete('/{product}', [ProductController::class, 'destroy'])
-        ->name('admin.products.destroy');
+    // Products Management
+    Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])
+            ->name('admin.products.index');
+        Route::post('/', [ProductController::class, 'store'])
+            ->name('admin.products.store');
+        Route::put('/{product}', [ProductController::class, 'update'])
+            ->name('admin.products.update');
+        Route::delete('/{product}', [ProductController::class, 'destroy'])
+            ->name('admin.products.destroy');
+    });
 });
