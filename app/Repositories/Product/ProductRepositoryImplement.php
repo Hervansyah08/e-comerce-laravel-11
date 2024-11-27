@@ -67,9 +67,4 @@ class ProductRepositoryImplement extends Eloquent implements ProductRepository
             throw new Exception("Terjadi kesalahan saat mengambil data kategori.");
         }
     }
-    public function create($data) {}
-
-    public function update($id, $data) {}
-    public function delete($id) {}
-    public function search($query) {}
 }

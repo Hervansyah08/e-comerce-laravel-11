@@ -66,6 +66,7 @@ class ProductController extends Controller
                 'description' => $validated['description'],
                 // cleanPrice untuk menghapus koma atau titik dan di ubah menjadi decimal atau float
                 'price' => $this->cleanPrice($validated['price']),
+                // 'price' => $validated['price'],
                 'stock' => $validated['stock'],
                 'image' => $image,
                 'is_active' => $request->has('is_active'),
@@ -82,10 +83,54 @@ class ProductController extends Controller
         }
     }
 
+    public function update(Request $request, Product $product)
+    {
+        try {
+            DB::beginTransaction();
 
+            $validated = $request->validate([
+                'category_id' => 'required|exists:categories,id',
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            ]);
+
+            $data = [
+                'category_id' => $validated['category_id'],
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'price' => $this->cleanPrice($validated['price']),
+                // 'price' => $validated['price'],
+                'stock' => $validated['stock'],
+                'is_active' => $request->has('is_active'),
+            ];
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $content = file_get_contents($file->getRealPath());
+                $extension = $file->getClientOriginalExtension();
+                $base64 = base64_encode($content);
+                $data['image'] = "data:image/{$extension};base64,{$base64}";
+            }
+
+            $product->update($data);
+
+            DB::commit();
+            return redirect()->route('admin.products.index')
+                ->with('success', 'Produk berhasil diperbarui');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::warning("Gagal memperbarui produk :" . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui produk: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
 
     private function cleanPrice($price)
     {
+        // menghapus semua karakter selain angka (0-9) dan titik (.), lalu mengubah hasilnya menjadi tipe data float.
         return (float) preg_replace('/[^0-9.]/', '', $price);
     }
 }
