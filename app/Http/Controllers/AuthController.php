@@ -93,7 +93,7 @@ class AuthController extends Controller
 
             // $request->boolean('remember') ini buat fitur remember, jadi ketika di centang fitur nya mengirim true
             if (Auth::attempt($credentials, $request->boolean('remember'))) {
-                $request->session()->regenerate();
+                $request->session()->regenerate(); // Regenerasi ID sesi
 
                 $user = Auth::user();
                 $redirectTo = $user->hasRole('admin') ? route('admin.dashboard') : route('home');
@@ -125,8 +125,8 @@ class AuthController extends Controller
         try {
             Auth::logout();
 
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            $request->session()->invalidate(); //untuk menghapus semua data sesi dan membuat sesi saat ini menjadi tidak valid
+            $request->session()->regenerateToken(); //untuk menghasilkan CSRF token baru dan mencegah CSRF
 
             return redirect()->route('home')
                 ->with('success', 'You have been logged out successfully');

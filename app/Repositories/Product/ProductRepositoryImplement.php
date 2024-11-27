@@ -5,9 +5,12 @@ namespace App\Repositories\Product;
 use Exception;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use LaravelEasyRepository\Implementations\Eloquent;
 
 class ProductRepositoryImplement extends Eloquent implements ProductRepository
@@ -65,6 +68,7 @@ class ProductRepositoryImplement extends Eloquent implements ProductRepository
         }
     }
     public function create($data) {}
+
     public function update($id, $data) {}
     public function delete($id) {}
     public function search($query) {}
