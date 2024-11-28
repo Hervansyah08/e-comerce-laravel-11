@@ -42,4 +42,40 @@ class OrdersController extends Controller
             return back()->withErrors('Gagal memuat data pesanan: ' . $e->getMessage());
         }
     }
+
+    public function updateStatus(Order $order, Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $request->validate([
+                'status' => 'required|string',
+                'resi_code' => 'required_if:status,dikirim|string|nullable',
+                // ini jika status dikirim wajib diisi resi kode nya
+            ], [
+                'status.required' => 'Status wajib diisi',
+                'resi_code.required_if' => 'Nomor resi wajib diisi jika status pengiriman dikirim',
+            ]);
+
+            $updateData = ['status' => $request->status];
+            if ($request->status === 'dikirim') {
+                if (empty($request->resi_code)) {
+                    throw new Exception('Nomor resi diperlukan untuk status pengiriman');
+                }
+                $updateData['resi_code'] = $request->resi_code;
+            } else {
+                // Jika status bukan "dikirim", hapus resi_code
+                $updateData['resi_code'] = null;
+            }
+
+            $order->update($updateData);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Gagal mengubah status pesanan: " . $e->getMessage());
+            return back()->with('error', 'Gagal mengubah status pesanan: ' . $e->getMessage());
+        }
+    }
 }

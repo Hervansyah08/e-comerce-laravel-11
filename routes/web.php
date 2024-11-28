@@ -55,7 +55,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrdersController::class, 'index'])
             ->name('admin.orders.index');
-        Route::patch('/{order}/status', [OrdersController::class, 'updateStatus'])
+        Route::put('/{order}/status', [OrdersController::class, 'updateStatus'])
             ->name('admin.orders.update-status');
     });
 });
