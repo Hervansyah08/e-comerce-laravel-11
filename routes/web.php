@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
@@ -48,5 +49,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
             ->name('admin.products.update');
         Route::delete('/{product}', [ProductController::class, 'destroy'])
             ->name('admin.products.destroy');
+    });
+
+    // Orders Management
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrdersController::class, 'index'])
+            ->name('admin.orders.index');
+        Route::patch('/{order}/status', [OrdersController::class, 'updateStatus'])
+            ->name('admin.orders.update-status');
     });
 });

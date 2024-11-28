@@ -24,6 +24,7 @@ class Product extends Model
         'is_active',
     ];
 
+    // tipe data ini akan di konversi ketika kita mengakses data dengan model
     protected $casts = [
         'price' => 'decimal:2',
         'is_active' => 'boolean',
