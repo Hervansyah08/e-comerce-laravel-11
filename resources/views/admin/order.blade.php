@@ -147,7 +147,7 @@
                             {{ $order->created_at->format('d M Y H:i') }}
                         </td>
                         <td class="px-6 py-4">
-                            <div class="space-x-2">
+                            <div class="flex space-x-2">
                                 <!-- Tombol Detail -->
                                 <button type="button" data-modal-target="order-detail-{{ $order->id }}"
                                     data-modal-toggle="order-detail-{{ $order->id }}"

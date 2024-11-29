@@ -5,10 +5,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Landing\LandingController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/produk', [LandingController::class, 'index'])->name('produk');
 
 // Authentication
 Route::middleware('guest')->group(function () {
