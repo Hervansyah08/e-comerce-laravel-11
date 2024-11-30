@@ -25,7 +25,8 @@ class LandingController extends Controller
 
             // Membuat query produk dengan relasi kategori
             $query = Product::with('category')
-                ->where('is_active', true);
+                ->where('is_active', true)
+                ->where('stock', '>', 0);
 
             // Filter berdasarkan nama produk
             if ($request->search) {
@@ -53,10 +54,10 @@ class LandingController extends Controller
                         break;
 
                     default:
-                        $query->latest();
+                        $query;
                 }
             } else {
-                $query->latest();
+                $query;
             }
 
             // Melakukan paginasi produk

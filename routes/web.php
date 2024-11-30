@@ -5,13 +5,29 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Landing\CartController;
 use App\Http\Controllers\Landing\LandingController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+Route::get('/clear', function () {
+    session()->forget('cart');
+});
+Route::get('/session-all', function () {
+    return session()->all();
+});
 
 Route::get('/produk', [LandingController::class, 'index'])->name('produk');
+
+// cart'
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/store/{product}', [CartController::class, 'store'])->name('cart.store');
+    Route::post('/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
+
 
 // Authentication
 Route::middleware('guest')->group(function () {
