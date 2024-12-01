@@ -101,7 +101,23 @@
                     <p class="text-gray-500  text-center">Keranjang belanja Anda kosong. <a href="{{ route('produk') }}"
                             class="text-blue-500 hover:underline">Lanjutkan belanja.</a>.</p>
                 @endforelse
+
+                {{-- informasi pengiriman --}}
+                <div id="form-detail-pengiriman" class="hidden mt-4">
+                    <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
+                    <form>
+                        <label for="alamat">Alamat Pengiriman:</label>
+                        <input type="text" id="alamat" name="alamat"
+                            class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
+                            placeholder="Masukkan alamat pengiriman" required />
+                        <label for="telepon" class="mt-4 block">Nomor Telepon:</label>
+                        <input type="text" id="telepon" name="telepon"
+                            class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
+                            placeholder="Masukkan nomor telepon" required />
+                    </form>
+                </div>
             </div>
+
 
             <!-- Order Summary -->
             <div class="w-full lg:w-1/3">
@@ -128,10 +144,14 @@
                             Login to Checkout
                         </a>
                     @else
-                        <a href=""
+                        <button id="btn-pembayaran"
+                            class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer w-full">
+                            Lanjutkan ke Pembayaran
+                        </button>
+                        {{-- <a href=""
                             class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
-                            Pesan Sekarang
-                        </a>
+                            Lanjutkan ke Pembayaran
+                        </a> --}}
                     @endguest
 
                 </div>
@@ -145,6 +165,25 @@
 
 
     <script>
+        // form pengiriman
+        document.addEventListener("DOMContentLoaded", function() {
+            const button = document.getElementById("btn-pembayaran");
+            const form = document.getElementById("form-detail-pengiriman");
+            let step = 1;
+
+            button.addEventListener("click", function() {
+                if (step === 1) {
+                    // Tampilkan form detail pengiriman
+                    form.classList.remove("hidden");
+                    button.textContent = "Bayar Sekarang";
+                    step++;
+                } else if (step === 2) {
+                    // Arahkan ke halaman pembayaran
+                    window.location.href = "/halaman-pembayaran"; // Ganti dengan URL pembayaran
+                }
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             // Tombol increment
             document.querySelectorAll('.increment').forEach(button => {
