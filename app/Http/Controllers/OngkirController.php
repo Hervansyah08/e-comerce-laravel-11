@@ -25,10 +25,19 @@ class OngkirController extends Controller
 
     public function cekOngkir(Request $request)
     {
+        $cart = session('cart', []); // Ambil data keranjang dari session
+
+        $total = 0;
+
+        foreach ($cart as $item) {
+            $total += $item['berat'] * $item['quantity'];
+        }
+
         $asal = 306; // ID kota asal Ngawi
         $tujuan = $request->tujuan; // ID kota tujuan
-        $berat = $request->berat; // Berat dalam gram
+        $berat = $total; // Berat dalam gram
         $kurir = $request->kurir; // Kurir (jne, tiki, dll)
+
 
         try {
             // Panggil layanan cek ongkir

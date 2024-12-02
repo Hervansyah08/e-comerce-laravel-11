@@ -123,6 +123,9 @@
                         Stok
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Berat
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -155,6 +158,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ $product->stock }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $product->berat }} gram
                         </td>
                         <td class="px-6 py-4">
                             <span
@@ -286,6 +292,16 @@
                             @enderror
                         </div>
                         <div class="col-span-2 sm:col-span-1">
+                            <label for="berat"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">berat</label>
+                            <input type="number" id="berat" name="berat" value="{{ old('berat') }}"
+                                class="@error('berat') border-red-500 @enderror bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="" required="">
+                            @error('berat')
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 for="file_input">Foto</label>
                             <input
@@ -403,6 +419,17 @@
                                     class="@error('stock') border-red-500 @enderror bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" required="">
                                 @error('stock')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="berat"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Berat</label>
+                                <input type="number" id="berat" name="berat"
+                                    value="{{ old('berat', $product->berat) }}"
+                                    class="@error('berat') border-red-500 @enderror bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="" required="">
+                                @error('berat')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
                                 @enderror
                             </div>

@@ -4,18 +4,11 @@ namespace App\Http\Controllers\Landing;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Services\RajaOngkirService;
 use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
 
-    protected $rajaOngkir;
-
-    public function __construct(RajaOngkirService $rajaOngkir)
-    {
-        $this->rajaOngkir = $rajaOngkir;
-    }
     public function index()
     {
         $cart = session('cart', []); // Ambil data keranjang dari session
@@ -43,7 +36,8 @@ class CartController extends Controller
                 "name" => $product->name,
                 "price" => $product->price,
                 "image" => $product->image,
-                "quantity" => 1
+                "quantity" => 1,
+                "berat" => $product->berat,
             ];
         }
 

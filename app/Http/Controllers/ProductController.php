@@ -42,6 +42,7 @@ class ProductController extends Controller
                 'description' => 'nullable|string',
                 'price' => 'required|numeric|min:0',
                 'stock' => 'required|integer|min:0',
+                'berat' => 'required|integer|min:0',
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
             ]);
 
@@ -68,6 +69,7 @@ class ProductController extends Controller
                 'price' => $this->cleanPrice($validated['price']),
                 // 'price' => $validated['price'],
                 'stock' => $validated['stock'],
+                'berat' => $validated['berat'],
                 'image' => $image,
                 'is_active' => $request->has('is_active'),
             ]);
@@ -94,6 +96,7 @@ class ProductController extends Controller
                 'description' => 'nullable|string',
                 'price' => 'required|numeric|min:0',
                 'stock' => 'required|integer|min:0',
+                'berat' => 'required|integer|min:0',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
             ]);
 
@@ -103,6 +106,7 @@ class ProductController extends Controller
                 'description' => $validated['description'],
                 'price' => $this->cleanPrice($validated['price']),
                 // 'price' => $validated['price'],
+                'berat' => $validated['berat'],
                 'stock' => $validated['stock'],
                 'is_active' => $request->has('is_active'),
             ];

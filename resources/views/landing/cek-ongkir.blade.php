@@ -37,9 +37,9 @@
     <form action="{{ route('cek-ongkir') }}" method="POST">
         @csrf
         <h1 class="text-sm mb-3 font-medium text-gray-700">Cek Ongkir</h1>
-        <input type="number" min="0" id="berat" name="berat"
+        {{-- <input type="number" min="0" id="berat" name="berat"
             class="block w-full p-2 mt-2 mb-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Masukkan Berat (gram)" required />
+            placeholder="Masukkan Berat (gram)" required /> --}}
 
         <div class="grid md:grid-cols-2 md:gap-6 mb-4">
             <select id="asal" name="asal"
