@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OngkirController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -12,7 +13,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 Route::get('/clear', function () {
-    session()->forget('cart');
+    // session()->forget('cart');
+    session()->forget('ongkir');
 });
 Route::get('/session-all', function () {
     return session()->all();
@@ -28,6 +30,14 @@ Route::prefix('cart')->group(function () {
     Route::delete('/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 
+// ongkir
+Route::middleware(['auth'])->prefix('cek-ongkir')->group(function () {
+    Route::get('/', [OngkirController::class, 'index'])
+        ->name('ongkir.index');
+    Route::post('/', [OngkirController::class, 'cekOngkir'])
+        ->name('cek-ongkir');
+    Route::post('/pilih-ongkir', [OngkirController::class, 'pilihOngkir'])->name('pilih-ongkir');
+});
 
 // Authentication
 Route::middleware('guest')->group(function () {

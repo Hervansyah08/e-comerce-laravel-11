@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('price', 15, 2);
             $table->integer('stock')->nullable();
             $table->longText('image')->nullable();
+            // $table->integer('berat')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

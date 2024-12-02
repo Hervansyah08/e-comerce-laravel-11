@@ -103,21 +103,27 @@
                 @endforelse
 
                 {{-- informasi pengiriman --}}
-                <div id="form-detail-pengiriman" class="hidden mt-4">
-                    <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
-                    <form>
-                        <label for="alamat">Alamat Pengiriman:</label>
-                        <input type="text" id="alamat" name="alamat"
-                            class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
-                            placeholder="Masukkan alamat pengiriman" required />
-                        <label for="telepon" class="mt-4 block">Nomor Telepon:</label>
-                        <input type="text" id="telepon" name="telepon"
-                            class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
-                            placeholder="Masukkan nomor telepon" required />
-                    </form>
-                </div>
+                @if ($cart)
+                    <div id="form-detail-pengiriman" class=" mt-4">
+                        <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
+                        <form action="">
+                            <div class="grid md:grid-cols-2 md:gap-6 mb-4">
+                                <input type="text" id="nama" name="nama"
+                                    class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
+                                    placeholder="Masukkan Nama Lengkap" required />
+                                <input type="text" id="telepon" name="telepon"
+                                    class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
+                                    placeholder="Masukkan nomor telepon" required />
+                            </div>
+                            <textarea id="alamat" rows="4" name="alamat"
+                                class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Detail Alamat (Cth:Blok)"></textarea>
+                            {{-- <button type="submit"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cek</button> --}}
+                        </form>
+                    </div>
+                @endif
             </div>
-
 
             <!-- Order Summary -->
             <div class="w-full lg:w-1/3">
@@ -126,17 +132,25 @@
                     <div class="space-y-2">
                         <div class="flex justify-between">
                             <p>Subtotal</p>
-                            <p>Rp{{ number_format($total, 0, ',', '.') }}</p>
+                            <p>Rp {{ number_format($total, 0, ',', '.') }}</p>
                         </div>
                         <div class="flex justify-between">
                             <p>Ongkir</p>
-                            {{-- <p>Rp{{ number_format($shipping, 0, ',', '.') }}</p> --}}
+                            @if (session('ongkir'))
+                                <p>Rp {{ number_format(session('ongkir')['value'], 0, ',', '.') }}</p>
+                            @endif
+                        </div>
+                        <div class="flex justify-between">
+                            <p>Estimasi</p>
+                            @if (session('ongkir'))
+                                <p>{{ session('ongkir')['etd'] }} hari</p>
+                            @endif
                         </div>
                     </div>
                     <hr class="my-4">
                     <div class="flex justify-between font-semibold">
                         <p>Total</p>
-                        <p>Rp{{ number_format($total, 0, ',', '.') }}</p>
+                        <p>Rp {{ number_format($total + (session('ongkir')['value'] ?? 0), 0, ',', '.') }}</p>
                     </div>
                     @guest
                         <a href="{{ route('login') }}"
@@ -144,14 +158,12 @@
                             Login to Checkout
                         </a>
                     @else
-                        <button id="btn-pembayaran"
-                            class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer w-full">
-                            Lanjutkan ke Pembayaran
-                        </button>
-                        {{-- <a href=""
-                            class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
-                            Lanjutkan ke Pembayaran
-                        </a> --}}
+                        <a href="{{ session('ongkir') ? route('cart.index') : route('ongkir.index') }}">
+                            <button id="btn-pembayaran"
+                                class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer w-full">
+                                {{ session('ongkir') ? 'Lanjutkan ke Pembayaran' : 'Pilih Ongkir' }}
+                            </button>
+                        </a>
                     @endguest
 
                 </div>
@@ -163,26 +175,25 @@
     </div>
 
 
-
     <script>
         // form pengiriman
-        document.addEventListener("DOMContentLoaded", function() {
-            const button = document.getElementById("btn-pembayaran");
-            const form = document.getElementById("form-detail-pengiriman");
-            let step = 1;
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     const button = document.getElementById("btn-pembayaran");
+        //     const form = document.getElementById("form-detail-pengiriman");
+        //     let step = 1;
 
-            button.addEventListener("click", function() {
-                if (step === 1) {
-                    // Tampilkan form detail pengiriman
-                    form.classList.remove("hidden");
-                    button.textContent = "Bayar Sekarang";
-                    step++;
-                } else if (step === 2) {
-                    // Arahkan ke halaman pembayaran
-                    window.location.href = "/halaman-pembayaran"; // Ganti dengan URL pembayaran
-                }
-            });
-        });
+        //     button.addEventListener("click", function() {
+        //         if (step === 1) {
+        //             // Tampilkan form detail pengiriman
+        //             form.classList.remove("hidden");
+        //             button.textContent = "Bayar Sekarang";
+        //             step++;
+        //         } else if (step === 2) {
+        //             // Arahkan ke halaman pembayaran
+        //             window.location.href = "/halaman-pembayaran"; // Ganti dengan URL pembayaran
+        //         }
+        //     });
+        // });
 
         document.addEventListener('DOMContentLoaded', () => {
             // Tombol increment

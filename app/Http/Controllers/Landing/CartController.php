@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Landing;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\RajaOngkirService;
 use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
+
+    protected $rajaOngkir;
+
+    public function __construct(RajaOngkirService $rajaOngkir)
+    {
+        $this->rajaOngkir = $rajaOngkir;
+    }
     public function index()
     {
         $cart = session('cart', []); // Ambil data keranjang dari session
@@ -19,6 +27,7 @@ class CartController extends Controller
 
         return view('landing.cart', compact('cart', 'total'));
     }
+
     public function store(Product $product)
     {
         $cart = session('cart', []);
@@ -59,7 +68,6 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('error', 'Produk tidak ditemukan di keranjang!');
     }
-
 
     public function destroy($id)
     {
