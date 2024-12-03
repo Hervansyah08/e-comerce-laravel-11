@@ -40,7 +40,7 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'price' => 'required|numeric|min:0',
+                'price' => 'required|string|min:0',
                 'stock' => 'required|integer|min:0',
                 'berat' => 'required|integer|min:0',
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
@@ -66,8 +66,8 @@ class ProductController extends Controller
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 // cleanPrice untuk menghapus koma atau titik dan di ubah menjadi decimal atau float
-                'price' => $this->cleanPrice($validated['price']),
-                // 'price' => $validated['price'],
+                // 'price' => $this->cleanPrice($validated['price']),
+                'price' => $validated['price'],
                 'stock' => $validated['stock'],
                 'berat' => $validated['berat'],
                 'image' => $image,
@@ -94,7 +94,7 @@ class ProductController extends Controller
                 'category_id' => 'required|exists:categories,id',
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'price' => 'required|numeric|min:0',
+                'price' => 'required|string|min:0',
                 'stock' => 'required|integer|min:0',
                 'berat' => 'required|integer|min:0',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
@@ -104,8 +104,8 @@ class ProductController extends Controller
                 'category_id' => $validated['category_id'],
                 'name' => $validated['name'],
                 'description' => $validated['description'],
-                'price' => $this->cleanPrice($validated['price']),
-                // 'price' => $validated['price'],
+                // 'price' => $this->cleanPrice($validated['price']),
+                'price' => $validated['price'],
                 'berat' => $validated['berat'],
                 'stock' => $validated['stock'],
                 'is_active' => $request->has('is_active'),
@@ -154,9 +154,9 @@ class ProductController extends Controller
         }
     }
 
-    private function cleanPrice($price)
-    {
-        // menghapus semua karakter selain angka (0-9) dan titik (.), lalu mengubah hasilnya menjadi tipe data float.
-        return (float) preg_replace('/[^0-9.]/', '', $price);
-    }
+    // private function cleanPrice($price)
+    // {
+    //     // menghapus semua karakter selain angka (0-9) dan titik (.), lalu mengubah hasilnya menjadi tipe data float.
+    //     return (float) preg_replace('/[^0-9.]/', '', $price);
+    // }
 }

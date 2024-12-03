@@ -103,7 +103,7 @@
                     <img src="{{ $product->image }}" alt="{{ $product->name }}"
                         class="w-full h-48 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold mb-2">{{ $product->name }}</h3>
-                    <p class="text-gray-600 mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                    <p class="text-gray-600 mb-2">Rp {{ $product->price }}</p>
                     <p class="text-gray-500 text-sm mb-4">{{ Str::limit($product->description, 45) }}</p>
 
                     <div class="flex justify-between items-center">
@@ -160,7 +160,7 @@
                         <div>
                             <h2 class="text-2xl mb-2 font-semibold dark:text-white">{{ $product->name }}</h2>
                             <p class=" text-lg mb-2 text-gray-500 font-semibold dark:text-gray-400">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                Rp {{ $product->price }}</p>
                             <p class=" text-base mb-4 text-gray-500">{{ $product->description }}</p>
                             <form action="{{ route('cart.store', $product->id) }}" method="POST">
                                 @csrf
