@@ -54,8 +54,14 @@ class Product extends Model
     public function price(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => number_format($value, 0, ',', '.'),
-            set: fn($value) => str_replace('.', '', $value)
+            get: fn($value) => number_format($value, 0, ',', '.'), // berfungsi ketika di panggil dengan model
+            set: fn($value) => str_replace('.', '', $value) // berfungsi ketika disimpan di database
+        );
+    }
+    public function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => ucwords(strtolower($value)), // Ubah seluruh kalimat menjadi huruf kecil dan kapital pada setiap kata
         );
     }
 }

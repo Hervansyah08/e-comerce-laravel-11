@@ -38,7 +38,6 @@ class OngkirController extends Controller
         $berat = $total; // Berat dalam gram
         $kurir = $request->kurir; // Kurir (jne, tiki, dll)
 
-
         try {
             // Panggil layanan cek ongkir
             $ongkir = $this->rajaOngkir->cekOngkir($asal, $tujuan, $berat, $kurir);
