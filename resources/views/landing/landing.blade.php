@@ -182,6 +182,7 @@
         </div>
     @endforeach
 
+@section('scripts')
     <script>
         // Menutup notifikasi setelah 4 detik
         setTimeout(function() {
@@ -198,4 +199,6 @@
             }
         }, 4000); // 4 detik
     </script>
+@endsection
+
 @endsection

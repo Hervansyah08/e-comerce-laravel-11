@@ -12,7 +12,7 @@ class Order extends Model
     protected $fillable = [
         'order_code',
         'user_id',
-        'total_prince',
+        'total_price',
         'status',
         'alamat_pengiriman',
         'midtrans_transaction_id',
@@ -22,7 +22,7 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'total_amount' => 'decimal:2',
+        'total_price' => 'decimal:2',
     ];
 
     public function user()

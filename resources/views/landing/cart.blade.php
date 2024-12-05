@@ -110,7 +110,8 @@
                 @if ($cart)
                     <div id="form-detail-pengiriman" class=" mt-4">
                         <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
-                        <form action="">
+                        <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+                            @csrf
                             <div class="grid md:grid-cols-2 md:gap-6 mb-4">
                                 <input type="text" id="nama" name="nama"
                                     class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
@@ -122,8 +123,11 @@
                             <textarea id="alamat" rows="4" name="alamat"
                                 class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Detail Alamat (Cth:Blok)"></textarea>
-                            {{-- <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Cek</button> --}}
+                            @if (session('ongkir'))
+                                <button id="pay-button"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lanjutkan
+                                    Pembayaran</button>
+                            @endif
                         </form>
                     </div>
                 @endif
@@ -162,12 +166,11 @@
                             Login to Checkout
                         </a>
                     @else
-                        <a href="{{ session('ongkir') ? route('cart.index') : route('ongkir.index') }}">
-                            <button id="btn-pembayaran"
+                        @if (!session('ongkir'))
+                            <a href="{{ route('ongkir.index') }}"
                                 class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer w-full">
-                                {{ session('ongkir') ? 'Lanjutkan ke Pembayaran' : 'Pilih Ongkir' }}
-                            </button>
-                        </a>
+                                Cek Ongkir</a>
+                        @endif
                     @endguest
 
                 </div>
@@ -178,44 +181,71 @@
         </div>
     </div>
 
+    @section('scripts')
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Tombol increment
-            document.querySelectorAll('.increment').forEach(button => {
-                button.addEventListener('click', function() {
-                    const input = this.closest('form').querySelector('.quantity-input');
-                    const currentValue = parseInt(input.value) || 0;
-                    input.value = currentValue + 1;
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
+        </script>
+        <script>
+            const paymentForm = document.getElementById('payment-form');
+            paymentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(paymentForm);
+
+                const response = await fetch('/checkout/process', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.snap_token) {
+                    snap.pay(result.snap_token); // Menampilkan popup Midtrans
+                } else {
+                    alert('Terjadi kesalahan: ' + result.error);
+                }
+            });
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+                // Tombol increment
+                document.querySelectorAll('.increment').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const input = this.closest('form').querySelector('.quantity-input');
+                        const currentValue = parseInt(input.value) || 0;
+                        input.value = currentValue + 1;
+                    });
+                });
+
+                // Tombol decrement
+                document.querySelectorAll('.decrement').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const input = this.closest('form').querySelector('.quantity-input');
+                        const currentValue = parseInt(input.value) || 0;
+                        if (currentValue > 1) {
+                            input.value = currentValue - 1;
+                        }
+                    });
                 });
             });
 
-            // Tombol decrement
-            document.querySelectorAll('.decrement').forEach(button => {
-                button.addEventListener('click', function() {
-                    const input = this.closest('form').querySelector('.quantity-input');
-                    const currentValue = parseInt(input.value) || 0;
-                    if (currentValue > 1) {
-                        input.value = currentValue - 1;
-                    }
-                });
-            });
-        });
 
+            // Menutup notifikasi setelah 4 detik
+            setTimeout(function() {
+                // Menyembunyikan notifikasi success
+                let successToast = document.getElementById('toast-success');
+                if (successToast) {
+                    successToast.style.display = 'none';
+                }
 
-        // Menutup notifikasi setelah 4 detik
-        setTimeout(function() {
-            // Menyembunyikan notifikasi success
-            let successToast = document.getElementById('toast-success');
-            if (successToast) {
-                successToast.style.display = 'none';
-            }
+                // Menyembunyikan notifikasi error
+                let errorToast = document.getElementById('toast-danger');
+                if (errorToast) {
+                    errorToast.style.display = 'none';
+                }
+            }, 4000); // 4 detik
+        </script>
+    @endsection
 
-            // Menyembunyikan notifikasi error
-            let errorToast = document.getElementById('toast-danger');
-            if (errorToast) {
-                errorToast.style.display = 'none';
-            }
-        }, 4000); // 4 detik
-    </script>
 @endsection

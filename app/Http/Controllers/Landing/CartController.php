@@ -14,12 +14,14 @@ class CartController extends Controller
         try {
             $cart = session('cart', []); // Ambil data keranjang dari session
             $total = 0;
+            $snap_token = '';
+            // dd($snap_token);
 
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
 
-            return view('landing.cart', compact('cart', 'total'));
+            return view('landing.cart', compact('cart', 'total', 'snap_token'));
         } catch (\Exception $e) {
             Log::error("Gagal mengambil data keranjang: " . $e->getMessage());
             return back()->withErrors('Gagal memuat data keranjang: ' . $e->getMessage());

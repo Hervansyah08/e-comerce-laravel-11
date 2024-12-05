@@ -28,6 +28,7 @@ class OngkirController extends Controller
         $cart = session('cart', []); // Ambil data keranjang dari session
 
         $total = 0;
+        $snap_token = '';
 
         foreach ($cart as $item) {
             $total += $item['berat'] * $item['quantity'];
@@ -51,7 +52,7 @@ class OngkirController extends Controller
             }
 
             // Kembalikan tampilan dengan data kota dan ongkir
-            return view('landing.cek-ongkir', compact('kota', 'ongkir'));
+            return view('landing.cek-ongkir', compact('kota', 'ongkir', 'snap_token'));
         } catch (Exception $e) {
             // Tangani kesalahan dan beri pesan error
             return back()->withErrors(['error' => $e->getMessage()]);

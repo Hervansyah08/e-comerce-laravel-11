@@ -219,6 +219,8 @@
         </div>
     </footer>
     {{-- end footer --}}
+
+    @yield('scripts')
 </body>
 
 </html>

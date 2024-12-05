@@ -7,6 +7,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Landing\CartController;
+use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\Landing\LandingController;
 
 Route::get('/', function () {
@@ -21,6 +22,18 @@ Route::get('/session-all', function () {
 });
 
 Route::get('/produk', [LandingController::class, 'index'])->name('produk');
+
+
+Route::middleware(['auth'])->group(function () {
+    // Regular User Routes
+    // Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders');
+
+    // Checkout Routes
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])
+        ->name('checkout.process');
+    // Route::post('/payments/update-status', [UserCheckoutController::class, 'updateStatus'])
+    //     ->name('payment.update-status');
+});
 
 // cart'
 Route::prefix('cart')->group(function () {
