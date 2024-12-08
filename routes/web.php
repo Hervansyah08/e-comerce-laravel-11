@@ -31,8 +31,8 @@ Route::middleware(['auth'])->group(function () {
     // Checkout Routes
     Route::post('/checkout/process', [CheckoutController::class, 'process'])
         ->name('checkout.process');
-    // Route::post('/payments/update-status', [UserCheckoutController::class, 'updateStatus'])
-    //     ->name('payment.update-status');
+    Route::post('/checkout/update-status', [CheckoutController::class, 'updateStatus'])
+        ->name('checkout.updateStatus');
 });
 
 // cart'

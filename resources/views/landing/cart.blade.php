@@ -191,21 +191,71 @@
                 e.preventDefault();
                 const formData = new FormData(paymentForm);
 
-                const response = await fetch('/checkout/process', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: formData
-                });
+                try {
+                    // Kirim request untuk mendapatkan Snap Token
+                    const response = await fetch('/checkout/process', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    });
 
-                const result = await response.json();
-                if (result.snap_token) {
-                    snap.pay(result.snap_token); // Menampilkan popup Midtrans
-                } else {
-                    alert('Terjadi kesalahan: ' + result.error);
+                    const result = await response.json();
+
+                    if (result.snap_token) {
+                        // Menampilkan popup Midtrans
+                        snap.pay(result.snap_token, {
+                            onSuccess: async function(result) {
+
+                                // Data untuk memperbarui status order
+                                const orderData = {
+                                    order_id: result.order_id, // Dari respons Midtrans
+                                    transaction_id: result.transaction_id, // Dari respons Midtrans
+                                    payment_type: result.payment_type, // Dari respons Midtrans
+                                    status: 'dibayar' // Karena pembayaran berhasil
+                                };
+
+                                // Update status order melalui backend
+                                const updateResponse = await fetch('/checkout/update-status', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify(orderData)
+                                });
+
+                                const updateResult = await updateResponse.json();
+                                if (updateResponse.ok) {
+                                    window.location.href =
+                                        '{{ route('home') }}'; // Arahkan ke halaman home
+                                } else {
+                                    alert('Error: ' + updateResult.message); // Tampilkan error jika ada
+                                }
+                            },
+                            onPending: function(result) {
+                                alert('Menunggu pembayaran...');
+                                console.log('Pending Payment:', result);
+                            },
+                            onError: function(result) {
+                                alert('Pembayaran gagal: ' + result.status_message);
+                                console.log('Payment Error:', result);
+                            },
+                            onClose: function() {
+                                // window.location.href =
+                                // '{{ route('home') }}'; // Arahkan ke halaman riwayat pesanan
+                            }
+                        });
+                    } else {
+                        alert('Terjadi kesalahan: ' + result.error);
+                    }
+                } catch (error) {
+                    console.error('Error processing payment:', error);
+                    alert('Terjadi kesalahan saat memproses pembayaran.');
                 }
             });
+
 
 
             document.addEventListener('DOMContentLoaded', () => {

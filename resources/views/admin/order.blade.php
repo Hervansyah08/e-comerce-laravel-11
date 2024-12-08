@@ -282,6 +282,18 @@
                             </div>
                             <div class="col-span-2 mt-4 ">
                                 <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Ongkir</div>
+                            </div>
+                            <div class="col-span-2  sm:col-span-1">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Rp</div>
+                            </div>
+                            <div class="col-span-2  sm:col-span-1">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Kurir</div>
+                            </div>
+                            <div class="col-span-2 mt-4 ">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     Pesanan</div>
                             </div>
                             <div class="col-span-2 ">

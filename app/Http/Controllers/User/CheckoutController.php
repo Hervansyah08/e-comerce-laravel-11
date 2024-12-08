@@ -132,4 +132,41 @@ class CheckoutController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function updateStatus(Request $request)
+    {
+        try {
+            $request->validate([
+                'order_id' => 'required',
+                'transaction_id' => 'required',
+                'payment_type' => 'required',
+                'status' => 'required|in:dibayar,pending,dibatalkan'
+            ]);
+
+            $order = Order::findOrFail($request->order_id);
+
+            // Pastikan user hanya bisa update ordernya sendiri
+            if ($order->user_id !== auth()->id()) {
+                throw new Exception('Akses tidak sah');
+            }
+
+            $order->update([
+                'status' => $request->status,
+                'midtrans_transaction_id' => $request->transaction_id,
+                'midtrans_payment_type' => $request->payment_type
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Order status updated successfully'
+            ]);
+        } catch (Exception $e) {
+            Log::error('Error updating order status: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 422);
+        }
+    }
 }
