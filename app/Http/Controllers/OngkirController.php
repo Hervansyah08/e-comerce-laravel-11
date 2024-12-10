@@ -50,6 +50,7 @@ class OngkirController extends Controller
             if (!$ongkir) {
                 throw new Exception('Tidak ada layanan pengiriman untuk pilihan ini.');
             }
+            // dd($ongkir);
 
             // Kembalikan tampilan dengan data kota dan ongkir
             return view('landing.cek-ongkir', compact('kota', 'ongkir', 'snap_token'));
@@ -66,7 +67,9 @@ class OngkirController extends Controller
         ]);
 
         $ongkir = json_decode($request->ongkir, true); // Decode JSON ongkir
+        $ekspedisi = json_decode($request->ekspedisi, true); // Dec
         session(['ongkir' => $ongkir]); // Simpan ongkir di sesi
+        session(['ekspedisi' => $ekspedisi]); // Simpan ekspedisi di sesi
 
         return redirect()->route('cart.index')->with('success', 'Ongkir berhasil dipilih.');
     }

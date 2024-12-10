@@ -27,7 +27,7 @@ class RajaOngkirService
             'courier' => $kurir
         ]);
 
-        return $response->json()['rajaongkir']['results'][0]['costs'];
+        return $response->json()['rajaongkir']['results'][0];
     }
 
     // Fungsi untuk mendapatkan daftar kota

@@ -143,22 +143,34 @@
                             <p>Rp {{ number_format($total, 0, ',', '.') }}</p>
                         </div>
                         <div class="flex justify-between">
+                            <p>Ekspedisi</p>
+                            @if (session('ekspedisi'))
+                                <p>{{ session('ekspedisi') }}</p>
+                            @endif
+                        </div>
+                        <div class="flex justify-between">
+                            <p>Paket</p>
+                            @if (session('ongkir'))
+                                <p>{{ session('ongkir')['description'] }}</p>
+                            @endif
+                        </div>
+                        <div class="flex justify-between">
                             <p>Ongkir</p>
                             @if (session('ongkir'))
-                                <p>Rp {{ number_format(session('ongkir')['value'], 0, ',', '.') }}</p>
+                                <p>Rp {{ number_format(session('ongkir')['cost'][0]['value'], 0, ',', '.') }}</p>
                             @endif
                         </div>
                         <div class="flex justify-between">
                             <p>Estimasi</p>
                             @if (session('ongkir'))
-                                <p>{{ session('ongkir')['etd'] }} hari</p>
+                                <p>{{ session('ongkir')['cost'][0]['etd'] }} hari</p>
                             @endif
                         </div>
                     </div>
                     <hr class="my-4">
                     <div class="flex justify-between font-semibold">
                         <p>Total</p>
-                        <p>Rp {{ number_format($total + (session('ongkir')['value'] ?? 0), 0, ',', '.') }}</p>
+                        <p>Rp {{ number_format($total + (session('ongkir')['cost'][0]['value'] ?? 0), 0, ',', '.') }}</p>
                     </div>
                     @guest
                         <a href="{{ route('login') }}"
@@ -243,8 +255,8 @@
                                 console.log('Payment Error:', result);
                             },
                             onClose: function() {
-                                // window.location.href =
-                                // '{{ route('home') }}'; // Arahkan ke halaman riwayat pesanan
+                                window.location.href =
+                                    '{{ route('home') }}'; // Arahkan ke halaman riwayat pesanan
                             }
                         });
                     } else {

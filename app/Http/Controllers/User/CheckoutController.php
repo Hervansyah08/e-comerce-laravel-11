@@ -6,6 +6,7 @@ use Exception;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Order;
+use App\Models\Ongkir;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,12 @@ class CheckoutController extends Controller
                 $request->telepon,
                 $request->alamat ?? '-'
             );
+            $ongkirRecord = Ongkir::create([
+                'ekspedisi' => session('ekspedisi'),
+                'layanan' => session('ongkir')['description'],
+                'biaya' => session('ongkir')['cost'][0]['value'],
+                'estimasi' => session('ongkir')['cost'][0]['etd'],
+            ]);
             // Create new order
             $order = Order::create([
                 'order_code' => 'ORDER-' . time(),
@@ -43,6 +50,7 @@ class CheckoutController extends Controller
                 'alamat_pengiriman' => $alamatPengiriman,
                 'total_price' => 0.00,
                 'status' => 'pending',
+                'ongkir_id' => $ongkirRecord->id,
             ]);
 
             $cart = session('cart', []);
@@ -70,7 +78,7 @@ class CheckoutController extends Controller
 
             // Add shipping cost
             $ongkir = session('ongkir');
-            $hargaOngkir = $ongkir['value'];
+            $hargaOngkir = $ongkir['cost'][0]['value'];
             $totalPrice += $hargaOngkir;
 
             // Update order total price
@@ -121,6 +129,7 @@ class CheckoutController extends Controller
 
             session()->forget('cart');
             session()->forget('ongkir');
+            session()->forget('ekspedisi');
 
             // Return Snap token for frontend payment process
             return response()->json(['snap_token' => $snapToken]);

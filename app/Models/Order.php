@@ -19,6 +19,7 @@ class Order extends Model
         'midtrans_payment_type',
         'snap_token',
         'resi_code',
+        'ongkir_id'
     ];
 
     protected $casts = [
@@ -34,5 +35,22 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+    public function ongkir()
+    {
+        return $this->belongsTo(Ongkir::class);
+    }
+    public function getDescriptiveStatus()
+    {
+        $descriptions = [
+            'pending' => 'Menunggu pembayaran',
+            'dibayar' => 'Sudah melakukan pembayaran',
+            'sedang diproses' => 'Pesanan sedang diproses',
+            'dikirim' => 'Pesanan sedang dikirim',
+            'terkirim' => 'Pesanan diterima',
+            'dibatalkan' => 'Pesanan telah dibatalkan',
+        ];
+
+        return $descriptions[$this->status] ?? ucfirst($this->status);
     }
 }

@@ -121,6 +121,12 @@
                         Tanggal Pemesanan
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Ekspedisi
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Paket
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Aksi
                     </th>
                 </tr>
@@ -138,13 +144,19 @@
                             Rp{{ number_format($order->total_price, 0, ',', '.') }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ ucfirst($order->status) }}
+                            {{ $order->getDescriptiveStatus() }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $order->midtrans_payment_type }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $order->created_at->format('d M Y H:i') }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $order->ongkir->ekspedisi ?? '' }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $order->ongkir->layanan ?? '' }}
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-2">
@@ -280,18 +292,32 @@
                                     Metode Pembayaran</div>
                                 <div> {{ $order->midtrans_payment_type }}</div>
                             </div>
+                            {{-- ongkir --}}
                             <div class="col-span-2 mt-4 ">
                                 <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     Ongkir</div>
                             </div>
                             <div class="col-span-2  sm:col-span-1">
                                 <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Rp</div>
+                                    Ekspedisi</div>
+                                <div> {{ $order->ongkir->ekspedisi ?? '' }}</div>
                             </div>
                             <div class="col-span-2  sm:col-span-1">
                                 <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Kurir</div>
+                                    Paket</div>
+                                <div>{{ $order->ongkir->layanan ?? '' }}</div>
                             </div>
+                            <div class="col-span-2  sm:col-span-1">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Biaya</div>
+                                <div>Rp {{ $order->ongkir->biaya ?? '' }}</div>
+                            </div>
+                            <div class="col-span-2  sm:col-span-1">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Estimasi</div>
+                                <div>{{ $order->ongkir->estimasi ?? '' }} hari</div>
+                            </div>
+                            {{-- pesanan --}}
                             <div class="col-span-2 mt-4 ">
                                 <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     Pesanan</div>
@@ -393,12 +419,17 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
                                 <select id="status" name="status"
                                     class="@error('status') border-red-500 @enderror bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option value="dibayar" {{ $order->status == 'dibayar' ? 'selected' : '' }}>Dibayar
+                                    <option value="dibayar" {{ $order->status == 'dibayar' ? 'selected' : '' }}>Sudah
+                                        Melakukan Pembayaran
                                     </option>
                                     <option value="sedang diproses"
                                         {{ $order->status == 'sedang diproses' ? 'selected' : '' }}>Sedang Diproses
                                     </option>
-                                    <option value="dikirim" {{ $order->status == 'dikirim' ? 'selected' : '' }}>Dikirim
+                                    <option value="dikirim" {{ $order->status == 'dikirim' ? 'selected' : '' }}>Pesanan
+                                        Dikirim
+                                    </option>
+                                    <option value="terkirim" {{ $order->status == 'terkirim' ? 'selected' : '' }}>Pesanan
+                                        Diterima
                                     </option>
                                 </select>
                             </div>
