@@ -144,32 +144,54 @@ class CheckoutController extends Controller
 
     public function updateStatus(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $request->validate([
                 'order_id' => 'required',
                 'transaction_id' => 'required',
                 'payment_type' => 'required',
-                'status' => 'required|in:dibayar,pending,dibatalkan'
+                'status' => 'required|in:dibayar,pending,dibatalkan,dikirim'
             ]);
 
-            $order = Order::findOrFail($request->order_id);
+            $order = Order::with('orderItems.product')->findOrFail($request->order_id);
 
             // Pastikan user hanya bisa update ordernya sendiri
             if ($order->user_id !== auth()->id()) {
                 throw new Exception('Akses tidak sah');
             }
 
+            foreach ($order->orderItems as $item) {
+                $product = $item->product;
+
+                if (!$product) {
+                    throw new Exception("Produk tidak ditemukan untuk item {$item->id}");
+                }
+
+                if ($product->stock < $item->quantity) {
+                    throw new Exception("Stok untuk produk '{$product->name}' tidak mencukupi.");
+                }
+
+                // Kurangi stok produk
+                $product->decrement('stock', $item->quantity);
+            }
+
+
+            // Update status pesanan
             $order->update([
                 'status' => $request->status,
                 'midtrans_transaction_id' => $request->transaction_id,
                 'midtrans_payment_type' => $request->payment_type
             ]);
 
+            DB::commit();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Order status updated successfully'
+                'message' => 'Status pesanan berhasil diperbarui'
             ]);
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error('Error updating order status: ' . $e->getMessage());
 
             return response()->json([

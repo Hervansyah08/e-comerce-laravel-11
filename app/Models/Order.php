@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
@@ -40,7 +41,7 @@ class Order extends Model
     {
         return $this->belongsTo(Ongkir::class);
     }
-    public function getDescriptiveStatus()
+    public function status(): Attribute
     {
         $descriptions = [
             'pending' => 'Menunggu pembayaran',
@@ -48,9 +49,11 @@ class Order extends Model
             'sedang diproses' => 'Pesanan sedang diproses',
             'dikirim' => 'Pesanan sedang dikirim',
             'terkirim' => 'Pesanan diterima',
-            'dibatalkan' => 'Pesanan telah dibatalkan',
+            'dibatalkan' => 'Pesanan dibatalkan',
         ];
 
-        return $descriptions[$this->status] ?? ucfirst($this->status);
+        return Attribute::make(
+            get: fn($value) => $descriptions[$value] ?? ucfirst($value), // Berikan deskripsi atau fallback ke kapitalisasi
+        );
     }
 }

@@ -53,16 +53,16 @@
         </div>
     @endif
 
-    <!-- Header Section -->
+    {{-- header --}}
     <div class="flex flex-wrap justify-between align-items-center mb-4">
-        <h2 class="text-4xl font-bold  dark:text-white">Daftar Pesanan</h2>
+        <h2 class="text-4xl font-bold  dark:text-white">Riwayat Pesanan</h2>
     </div>
 
     <!-- Table Section -->
     <div class="relative overflow-x-auto">
         {{-- serach --}}
         <div class="mb-4">
-            <form action="{{ route('admin.orders.index') }}" method="GET"
+            <form action="{{ route('admin.history.index') }}" method="GET"
                 class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <!-- Dropdown status -->
                 <div>
@@ -70,14 +70,13 @@
                     <select name="status" id="status"
                         class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         <option value="">Semua Status</option>
-                        @foreach (['dibayar', 'sedang diproses', 'dikirim'] as $status)
+                        @foreach (['terkirim', 'dibatalkan'] as $status)
                             <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
                                 {{ (new \App\Models\Order(['status' => $status]))->status }}
                             </option>
                         @endforeach
                     </select>
                 </div>
-
                 <!-- Input pencarian -->
                 <div>
                     <label for="search" class="sr-only">Cari Pesanan</label>
@@ -85,7 +84,6 @@
                         placeholder="Cari kode pesanan atau nama pengguna"
                         class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
-
                 <!-- Tombol submit -->
                 <div class="sm:col-span-2 lg:col-span-1">
                     <button type="submit"
@@ -95,9 +93,6 @@
                 </div>
             </form>
         </div>
-
-
-
         {{-- tabel --}}
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
@@ -106,25 +101,13 @@
                         Kode Pesanan
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Pelanggan
+                        Tanggal
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Total Harga
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Status
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Metode Pembayaran
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Tanggal Pemesanan
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Ekspedisi
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Paket
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Aksi
@@ -138,25 +121,13 @@
                             {{ $order->order_code }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $order->user->name }}
+                            {{ $order->created_at->format('d M Y H:i') }}
                         </td>
                         <td class="px-6 py-4">
                             Rp{{ number_format($order->total_price, 0, ',', '.') }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $order->status }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $order->midtrans_payment_type }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $order->created_at->format('d M Y H:i') }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $order->ongkir->ekspedisi ?? '' }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ $order->ongkir->layanan ?? '' }}
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex space-x-2">
@@ -172,21 +143,7 @@
                                             d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     </svg>
                                 </button>
-
-                                <!-- Tombol Edit -->
-                                <button type="button" data-modal-target="updateModal-{{ $order->id }}"
-                                    data-modal-toggle="updateModal-{{ $order->id }}"
-                                    class="p-2 text-green-500 bg-transparent border border-green-500 rounded-lg hover:bg-green-500 hover:text-white focus:ring-2 focus:ring-green-400 focus:bg-green-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M16.862 3.487a2.625 2.625 0 113.712 3.712L8.25 19.525l-4.5 1.125 1.125-4.5 12.487-12.487z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.128 6.241l-4.365-4.365" />
-                                    </svg>
-                                </button>
                             </div>
-
                         </td>
                     </tr>
                 @empty
@@ -207,9 +164,7 @@
     </div>
     {{-- akhir tabel --}}
 
-    <!-- Modal untuk setiap order -->
     @foreach ($orders as $order)
-        {{-- detail order --}}
         <div id="order-detail-{{ $order->id }}" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-3xl max-h-full">
@@ -374,115 +329,16 @@
                                         </tfoot>
                                     </table>
                                 </div>
-
                             </div>
-
                         </div>
                         <button type="submit" data-modal-hide="order-detail-{{ $order->id }}"
-                            style="margin-left: 38rem"
-                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            style="margin-left: 38rem">
                             Tutup
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-
-        {{-- edit --}}
-        <div id="updateModal-{{ $order->id }}" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-md max-h-full">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Edit Status {{ $order->order_code }}
-                        </h3>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-hide="updateModal-{{ $order->id }}">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <form class="p-4 md:p-5" action="{{ route('admin.orders.update-status', $order->id) }}"
-                        method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="grid gap-4 mb-4 grid-cols-2">
-                            <div class="col-span-2">
-                                <label for="status"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                <select id="status" name="status"
-                                    class="@error('status') border-red-500 @enderror bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option value="" {{ old('status', $order->status) == '' ? 'selected' : '' }}>
-                                        Pilih Status</option>
-                                    <option value="dibayar"
-                                        {{ old('status', $order->status) == 'Sudah melakukan pembayaran' ? 'selected' : '' }}>
-                                        Sudah
-                                        Melakukan Pembayaran
-                                    </option>
-                                    <option value="sedang diproses"
-                                        {{ old('status', $order->status) == 'Pesanan sedang diproses' ? 'selected' : '' }}>
-                                        Sedang
-                                        Diproses
-                                    </option>
-                                    <option value="dikirim"
-                                        {{ old('status', $order->status) == 'Pesanan sedang dikirim' ? 'selected' : '' }}>
-                                        Pesanan
-                                        Dikirim
-                                    </option>
-                                    <option value="terkirim"
-                                        {{ old('status', $order->status) == 'Pesanan diterima' ? 'selected' : '' }}>Pesanan
-                                        Diterima
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label for="resi_code"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Resi</label>
-                                <input type="text" name="resi_code" value="{{ $order->resi_code }}"
-                                    placeholder="Nomor Resi Wajib Diisi Ketika Status di kirim"
-                                    class="@error('resi_code') border-red-500 @enderror  block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            Edit Status
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
     @endforeach
-
-
-    <script>
-        // Menutup notifikasi setelah 4 detik
-        setTimeout(function() {
-            // Menyembunyikan notifikasi success
-            let successToast = document.getElementById('toast-success');
-            if (successToast) {
-                successToast.style.display = 'none';
-            }
-
-            // Menyembunyikan notifikasi error
-            let errorToast = document.getElementById('toast-danger');
-            if (errorToast) {
-                errorToast.style.display = 'none';
-            }
-        }, 4000); // 4 detik
-    </script>
 @endsection

@@ -7,6 +7,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Landing\CartController;
+use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\Landing\LandingController;
 
@@ -16,6 +17,7 @@ Route::get('/', function () {
 Route::get('/clear', function () {
     // session()->forget('cart');
     session()->forget('ongkir');
+    session()->forget('ekspedisi');
 });
 Route::get('/session-all', function () {
     return session()->all();
@@ -100,4 +102,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
         Route::put('/{order}/status', [OrdersController::class, 'updateStatus'])
             ->name('admin.orders.update-status');
     });
+
+    // Order History
+    Route::get('/history-order', [OrderHistoryController::class, 'index'])
+        ->name('admin.history.index');
 });
