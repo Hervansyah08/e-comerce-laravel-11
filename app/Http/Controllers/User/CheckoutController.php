@@ -45,7 +45,7 @@ class CheckoutController extends Controller
             ]);
             // Create new order
             $order = Order::create([
-                'order_code' => 'ORDER-' . time(),
+                'order_code' => 'ORDER-' . uniqid(),
                 'user_id' => auth()->id(),
                 'alamat_pengiriman' => $alamatPengiriman,
                 'total_price' => 0.00,
@@ -87,7 +87,7 @@ class CheckoutController extends Controller
             // $params adalah sebuah array yang digunakan untuk mengonfigurasi pembayaran menggunakan Midtrans
             $params = [
                 'transaction_details' => [
-                    'order_id' => (string) $order->id,
+                    'order_id' => $order->order_code,
                     'gross_amount' => (int) $totalPrice,
                 ],
                 'item_details' => array_merge($items, [
@@ -142,6 +142,7 @@ class CheckoutController extends Controller
         }
     }
 
+
     public function updateStatus(Request $request)
     {
         DB::beginTransaction();
@@ -154,7 +155,8 @@ class CheckoutController extends Controller
                 'status' => 'required|in:dibayar,pending,dibatalkan,dikirim'
             ]);
 
-            $order = Order::with('orderItems.product')->findOrFail($request->order_id);
+            // Gunakan 'order_code' untuk mencari order, bukan 'id'
+            $order = Order::where('order_code', $request->order_id)->firstOrFail();
 
             // Pastikan user hanya bisa update ordernya sendiri
             if ($order->user_id !== auth()->id()) {
@@ -175,7 +177,6 @@ class CheckoutController extends Controller
                 // Kurangi stok produk
                 $product->decrement('stock', $item->quantity);
             }
-
 
             // Update status pesanan
             $order->update([
