@@ -52,6 +52,7 @@ Route::middleware(['auth'])->prefix('cek-ongkir')->group(function () {
     Route::post('/', [OngkirController::class, 'cekOngkir'])
         ->name('cek-ongkir');
     Route::post('/pilih-ongkir', [OngkirController::class, 'pilihOngkir'])->name('pilih-ongkir');
+    Route::delete('/', [OngkirController::class, 'delete'])->name('ongkir.delete');
 });
 
 // Authentication

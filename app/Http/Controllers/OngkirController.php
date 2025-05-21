@@ -73,4 +73,11 @@ class OngkirController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Ongkir berhasil dipilih.');
     }
+
+    public function delete()
+    {
+        session()->forget('ongkir');
+        session()->forget('ekspedisi');
+        return redirect()->route('cart.index')->with('success', 'Ongkir berhasil dihapus.');
+    }
 }

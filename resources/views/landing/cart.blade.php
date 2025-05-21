@@ -110,8 +110,9 @@
                 @if ($cart)
                     <div id="form-detail-pengiriman" class=" mt-4">
                         <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
-                        <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
-                            @csrf
+                        {{-- <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+                            @csrf --}}
+                        <form>
                             <div class="grid md:grid-cols-2 md:gap-6 mb-4">
                                 <input type="text" id="nama" name="nama"
                                     class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
@@ -123,15 +124,16 @@
                             <textarea id="alamat" rows="4" name="alamat"
                                 class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Detail Alamat (Cth:Blok)"></textarea>
-                            @if (session('ongkir'))
+                            {{-- @if (session('ongkir'))
                                 <button id="pay-button"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lanjutkan
                                     Pembayaran</button>
-                            @endif
+                            @endif --}}
                         </form>
                     </div>
                 @endif
             </div>
+
 
             <!-- Order Summary -->
             <div class="w-full lg:w-1/3">
@@ -182,10 +184,44 @@
                             <a href="{{ route('ongkir.index') }}"
                                 class="block mt-6 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer w-full">
                                 Cek Ongkir</a>
+                        @else
+                            <div class="flex gap-4 mt-5 justify-center">
+                                <form action="{{ route('ongkir.delete') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-center bg-red-700 text-white py-2 px-4 rounded-lg hover:bg-red-800 cursor-pointer w-full">
+                                        Hapus Ongkir
+                                    </button>
+                                </form>
+
+                                <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+                                    @csrf
+                                    <button id="pay-button"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-full">
+                                        Lanjutkan Pembayaran
+                                    </button>
+                                </form>
+                            </div>
                         @endif
                     @endguest
 
                 </div>
+                @if (session('ongkir'))
+                    <div class="flex items-center text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Perhatian!</span> Jika Anda ingin mengubah atau menambahkan pesanan,
+                            silakan hapus ongkir terlebih dahulu.
+                        </div>
+                    </div>
+                @endif
                 <a href="{{ route('produk') }}" class="block mt-4 text-center text-green-500 hover:underline">
                     &larr; Lanjutkan Belanja
                 </a>
