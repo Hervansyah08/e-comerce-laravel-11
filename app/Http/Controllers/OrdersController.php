@@ -64,10 +64,11 @@ class OrdersController extends Controller
                     throw new Exception('Nomor resi diperlukan untuk status pengiriman');
                 }
                 $updateData['resi_code'] = $request->resi_code;
-            } else {
-                // Jika status bukan "dikirim", hapus resi_code
-                $updateData['resi_code'] = null;
             }
+            // else {
+            //     // Jika status bukan "dikirim", hapus resi_code
+            //     $updateData['resi_code'] = null;
+            // }
 
             $order->update($updateData);
 

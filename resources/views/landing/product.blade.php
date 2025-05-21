@@ -1,3 +1,4 @@
+{{-- ini untuk menampilkan semua produk di user atau dari landingcontroller dengan route name produk --}}
 @extends('layouts.layouts-landing')
 
 @section('title', 'E-Commerce')
@@ -93,15 +94,15 @@
                     Filter
                 </button>
             </form>
-
         </div>
+
 
         <!-- Produk List -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($products as $product)
                 <div class="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                     <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                        class="w-full h-48 object-cover rounded-md mb-4">
+                        class="w-full max-h-96 object-cover rounded-md mb-4">
                     <h3 class="text-xl font-semibold mb-2">{{ $product->name }}</h3>
                     <p class="text-gray-600 mb-2">Rp {{ $product->price }}</p>
                     <p class="text-gray-500 text-sm mb-4">{{ Str::limit($product->description, 45) }}</p>
@@ -181,6 +182,7 @@
             </div>
         </div>
     @endforeach
+    {{-- end detail produk --}}
 
 @section('scripts')
     <script>

@@ -23,7 +23,7 @@ Route::get('/session-all', function () {
     return session()->all();
 });
 
-Route::get('/produk', [LandingController::class, 'index'])->name('produk');
+Route::get('/produk', [LandingController::class, 'product'])->name('produk');
 
 
 Route::middleware(['auth'])->group(function () {

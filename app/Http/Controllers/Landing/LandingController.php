@@ -1,5 +1,5 @@
 <?php
-
+// ini buat menampilakn semua produk di user atau navbar produk
 namespace App\Http\Controllers\Landing;
 
 use App\Models\Product;
@@ -17,7 +17,7 @@ class LandingController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    public function index(Request $request)
+    public function product(Request $request)
     {
         try {
             // Mengambil kategori produk
@@ -67,7 +67,7 @@ class LandingController extends Controller
             $products = $products->appends($request->all());
 
             // Mengirim data ke view
-            return view('landing.landing', compact('products', 'categories'));
+            return view('landing.product', compact('products', 'categories'));
         } catch (\Exception $e) {
             // Menangani error dan log
             Log::error("Gagal mengambil data produk untuk user: " . $e->getMessage());
