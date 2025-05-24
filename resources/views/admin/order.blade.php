@@ -132,6 +132,13 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $statusBadgeClasses = [
+                        'Sudah melakukan pembayaran' => ' text-blue-800   dark:text-blue-300',
+                        'Pesanan sedang diproses' => 'text-orange-800 dark:text-orange-300',
+                        'Pesanan sedang dikirim' => 'text-indigo-800 dark:text-indigo-300',
+                    ];
+                @endphp
                 @forelse($orders as $order)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -143,7 +150,7 @@
                         <td class="px-6 py-4">
                             Rp{{ number_format($order->total_price, 0, ',', '.') }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 {{ $statusBadgeClasses[$order->status] }}">
                             {{ $order->status }}
                         </td>
                         <td class="px-6 py-4">
