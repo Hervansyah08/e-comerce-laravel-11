@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class UserOrderController extends Controller
 {
+    // untuk menampilkan riwayat pesananan berdasarkan user yang login
     public function index(Request $request)
     {
         $orders = Order::with(['orderItems.product'])
@@ -21,6 +22,6 @@ class UserOrderController extends Controller
             ->latest()
             ->paginate(5);
 
-        return view('landing.order', compact('orders'));;
+        return view('landing.order-history', compact('orders'));;
     }
 }

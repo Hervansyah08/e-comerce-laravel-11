@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Landing\CartController;
 use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Landing\LandingController;
 
 Route::get('/', function () {
@@ -27,8 +28,8 @@ Route::get('/produk', [LandingController::class, 'product'])->name('produk');
 
 
 Route::middleware(['auth'])->group(function () {
-    // Regular User Routes
-    // Route::get('/orders', [UserOrderController::class, 'index'])->name('user.orders');
+    // riwayat pesanan
+    Route::get('/orders/history', [UserOrderController::class, 'index'])->name('user.orders.history');
 
     // Checkout Routes
     Route::post('/checkout/process', [CheckoutController::class, 'process'])

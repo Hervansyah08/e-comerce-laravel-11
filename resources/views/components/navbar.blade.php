@@ -69,20 +69,20 @@
                                       </li>
                                   @endrole
                                   <li>
-                                      <a href="#"
+                                      <a href="{{ route('user.orders.history') }}"
                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Riwayat
                                           Pesanan</a>
                                   </li>
-                                  <li>
+                                  {{-- <li>
                                       <a href="#"
                                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                                  </li>
+                                  </li> --}}
                               </ul>
                               <div class="py-1">
                                   <form method="POST" action="{{ route('auth.logout') }}">
                                       @csrf
                                       <button type="submit"
-                                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign
+                                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log
                                           out</button>
                                   </form>
                               </div>
