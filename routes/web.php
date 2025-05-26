@@ -11,10 +11,14 @@ use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Landing\LandingController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+Route::get('/test', function () {
+    return view('test');
+});
 Route::get('/clear', function () {
     // session()->forget('cart');
     session()->forget('ongkir');
@@ -36,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('checkout.process');
     Route::post('/checkout/update-status', [CheckoutController::class, 'updateStatus'])
         ->name('checkout.updateStatus');
+    // Route::post('/checkout/cancel-order', [CheckoutController::class, 'cancelOrder'])
+    //     ->name('checkout.cancelOrders');
 });
 
 // cart'
@@ -108,4 +114,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // Order History
     Route::get('/history-order', [OrderHistoryController::class, 'index'])
         ->name('admin.history.index');
+
+    // user Management
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])
+            ->name('admin.user.index');
+        // Route::post('/', [ProductController::class, 'store'])
+        //     ->name('admin.products.store');
+        // Route::put('/{product}', [ProductController::class, 'update'])
+        //     ->name('admin.products.update');
+        // Route::delete('/{product}', [ProductController::class, 'destroy'])
+        //     ->name('admin.products.destroy');
+    });
 });
