@@ -119,8 +119,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])
             ->name('admin.user.index');
-        // Route::post('/', [ProductController::class, 'store'])
-        //     ->name('admin.products.store');
+        Route::post('/', [UserController::class, 'store'])
+            ->name('admin.user.store');
         // Route::put('/{product}', [ProductController::class, 'update'])
         //     ->name('admin.products.update');
         // Route::delete('/{product}', [ProductController::class, 'destroy'])
