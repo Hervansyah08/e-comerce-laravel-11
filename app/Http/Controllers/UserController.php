@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
@@ -47,6 +48,18 @@ class UserController extends Controller
             Log::error("Kesalahan di controller" . $e->getMessage());
             return back()->with('error', 'Gagal Menambahkan Akun: ' . $e->getMessage())
                 ->withInput();
+        }
+    }
+
+    public function destroy(User $user)
+    {
+        try {
+            $this->user->delete($user->id);
+
+            return redirect()->route('admin.user.index')->with('success', 'Akun User berhasil dihapus');
+        } catch (Exception $e) {
+            Log::error("Kesalahan saat menghapus user ID {$user->id}: " . $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
 }

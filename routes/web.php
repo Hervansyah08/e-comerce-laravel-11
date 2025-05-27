@@ -123,7 +123,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
             ->name('admin.user.store');
         // Route::put('/{product}', [ProductController::class, 'update'])
         //     ->name('admin.products.update');
-        // Route::delete('/{product}', [ProductController::class, 'destroy'])
-        //     ->name('admin.products.destroy');
+        Route::delete('/{user}', [UserController::class, 'destroy'])
+            ->name('admin.user.destroy');
     });
 });

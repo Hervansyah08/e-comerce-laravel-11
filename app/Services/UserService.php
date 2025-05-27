@@ -64,4 +64,24 @@ class UserService
             throw new Exception("Terjadi kesalahan saat menambahkan Akun user ");
         }
     }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($id);
+
+            // Jika pakai Spatie
+            $user->syncRoles([]); // Hapus semua role user (opsional)
+
+            $user->delete();
+
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::warning("Gagal Hapus Akun User ID $id: " . $e->getMessage());
+            throw $e;
+        }
+    }
 }
