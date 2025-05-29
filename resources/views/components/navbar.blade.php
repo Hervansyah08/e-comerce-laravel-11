@@ -1,99 +1,169 @@
-  <nav class="bg-[#edede9] border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-              <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-              <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-          </a>
-          <button data-collapse-toggle="navbar-dropdown" type="button"
-              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="navbar-dropdown" aria-expanded="false">
-              <span class="sr-only">Open main menu</span>
-              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 17 14">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M1 1h15M1 7h15M1 13h15" />
-              </svg>
-          </button>
-          <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
-              <ul
-                  class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-[#edede9] md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-[#edede9] dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                  <li>
-                      <a href="{{ route('home') }}"
-                          class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
-                          aria-current="page">Home</a>
-                  </li>
-                  <li>
-                      <a href="{{ route('home') }}#service"
-                          class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Service</a>
-                  </li>
-                  <li>
-                      <a href="{{ route('produk') }}"
-                          class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Produk</a>
-                  </li>
-                  <li>
-                      <a href="{{ route('cart.index') }}"
-                          class="relative inline-flex items-center py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                              stroke="currentColor" class="size-6">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                          </svg>
-                          <div
-                              class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -end-3 dark:border-gray-900">
-                              {{ count(session('cart', [])) }}</div>
-                      </a>
-                  </li>
-                  @guest
-                      <li>
-                          <a href="{{ route('login') }}"
-                              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
-                      </li>
-                      <li>
-                          <a href="{{ route('register') }}"
-                              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</a>
-                      </li>
-                  @else
-                      <li>
-                          <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
-                              class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">{{ Auth::user()->name }}
-                              <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                  fill="none" viewBox="0 0 10 6">
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m1 1 4 4 4-4" />
-                              </svg></button>
-                          <!-- Dropdown menu -->
-                          <div id="dropdownNavbar"
-                              class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                              <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
-                                  aria-labelledby="dropdownLargeButton">
-                                  @role('admin')
-                                      <li>
-                                          <a href="{{ route('admin.dashboard') }}"
-                                              class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                                      </li>
-                                  @endrole
-                                  <li>
-                                      <a href="{{ route('user.orders.history') }}"
-                                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Riwayat
-                                          Pesanan</a>
-                                  </li>
-                                  {{-- <li>
-                                      <a href="#"
-                                          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                                  </li> --}}
-                              </ul>
-                              <div class="py-1">
-                                  <form method="POST" action="{{ route('auth.logout') }}">
-                                      @csrf
-                                      <button type="submit"
-                                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log
-                                          out</button>
-                                  </form>
-                              </div>
-                          </div>
-                      </li>
-                  @endguest
-              </ul>
-          </div>
-      </div>
-  </nav>
+ <nav class="bg-[#edede9] dark:bg-gray-800 antialiased">
+     <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
+         <div class="flex items-center justify-between">
+
+             <div class="flex items-center space-x-8">
+                 <div class="shrink-0">
+                     <a href="#" title="" class="">
+                         <img class="block w-auto h-8 dark:hidden"
+                             src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full.svg" alt="">
+                         <img class="hidden w-auto h-8 dark:block"
+                             src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full-dark.svg"
+                             alt="">
+                     </a>
+                 </div>
+
+                 <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
+                     <li>
+                         <a href="{{ route('home') }}" title=""
+                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+                             Home
+                         </a>
+                     </li>
+                     <li class="shrink-0">
+                         <a href="{{ route('home') }}#service" title=""
+                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+                             Service
+                         </a>
+                     </li>
+                     <li class="shrink-0">
+                         <a href="{{ route('produk') }}" title=""
+                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+                             Product
+                         </a>
+                     </li>
+                     {{-- <li class="shrink-0">
+                            <a href="#" title=""
+                                class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+                                Today's Deals
+                            </a>
+                        </li>
+                        <li class="shrink-0">
+                            <a href="#" title=""
+                                class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+                                Sell
+                            </a>
+                        </li> --}}
+                 </ul>
+             </div>
+
+             <div class="flex items-center lg:space-x-2">
+
+                 <a href="{{ route('cart.index') }}"
+                     class="relative inline-flex items-center py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                     <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                         height="24" fill="none" viewBox="0 0 24 24">
+                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                             d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                     </svg>
+                     <span class="hidden sm:flex">My Cart</span>
+                     <div
+                         class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -end-3 dark:border-gray-900">
+                         {{ count(session('cart', [])) }}</div>
+                 </a>
+                 @guest
+                     <a href="{{ route('login') }}"
+                         class="relative inline-flex items-center py-2 px-3 md:px-5 text-gray-900 rounded  md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                         <span class=" sm:flex">Login </span>
+                     </a>
+                     <a href="{{ route('register') }}"
+                         class="relative inline-flex items-center py-2 px-2  text-gray-900 rounded  md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+                         <span class=" sm:flex">Register</span>
+                     </a>
+                 @else
+                     {{-- user --}}
+                     <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button"
+                         class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+                         <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                             height="24" fill="none" viewBox="0 0 24 24">
+                             <path stroke="currentColor" stroke-width="2"
+                                 d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                         </svg>
+                         {{ Auth::user()->name }}
+                         <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                             viewBox="0 0 24 24">
+                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="m19 9-7 7-7-7" />
+                         </svg>
+                     </button>
+
+                     <div id="userDropdown1"
+                         class="hidden z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+                         <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+                             @role('admin')
+                                 <li><a href="{{ route('admin.dashboard') }}" title=""
+                                         class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                         Dashboard </a></li>
+                             @endrole
+                             <li><a href="{{ route('user.orders.history') }}" title=""
+                                     class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                     Riwayat Pesanan </a></li>
+                             {{-- <li><a href="#" title=""
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Settings </a></li>
+                                <li><a href="#" title=""
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Favourites </a></li>
+                                <li><a href="#" title=""
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Delivery Addresses </a></li>
+                                <li><a href="#" title=""
+                                        class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Billing Data </a></li> --}}
+                         </ul>
+
+                         <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
+                             <form method="POST" action="{{ route('auth.logout') }}">
+                                 @csrf
+                                 <button type="submit" title=""
+                                     class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                     Sign Out </button>
+                             </form>
+                         </div>
+                     </div>
+                 @endguest
+
+                 <button type="button" data-collapse-toggle="ecommerce-navbar-menu-1"
+                     aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
+                     class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
+                     <span class="sr-only">
+                         Open Menu
+                     </span>
+                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                         height="24" fill="none" viewBox="0 0 24 24">
+                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                             d="M5 7h14M5 12h14M5 17h14" />
+                     </svg>
+                 </button>
+             </div>
+         </div>
+
+         <div id="ecommerce-navbar-menu-1"
+             class="bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 hidden px-4 mt-4">
+             <ul class="text-gray-900 dark:text-white text-sm font-medium dark:text-white space-y-3">
+                 <li>
+                     <a href="{{ route('home') }}"
+                         class="hover:text-primary-700 dark:hover:text-primary-500">Home</a>
+                 </li>
+                 <li>
+                     <a href="{{ route('home') }}#service"
+                         class="hover:text-primary-700 dark:hover:text-primary-500">Service</a>
+                 </li>
+                 <li>
+                     <a href="{{ route('produk') }}"
+                         class="hover:text-primary-700 dark:hover:text-primary-500">Product</a>
+                 </li>
+                 {{-- <li>
+                        <a href="#" class="hover:text-primary-700 dark:hover:text-primary-500">Games</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-primary-700 dark:hover:text-primary-500">Electronics</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-primary-700 dark:hover:text-primary-500">Home & Garden</a>
+                    </li> --}}
+             </ul>
+         </div>
+     </div>
+ </nav>
