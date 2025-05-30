@@ -290,7 +290,7 @@
 
                                 <div class="mt-4 ">
                                     <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">
-                                        Rp{{ $product->price }}</p>
+                                        Rp {{ $product->price }}</p>
 
                                     <form action="{{ route('cart.store', $product->id) }}" method="POST">
                                         @csrf
@@ -352,7 +352,7 @@
                             <h2 class="text-2xl mb-2 font-semibold dark:text-white">{{ $product->name }}</h2>
                             <p class=" text-lg mb-2 text-gray-500 font-semibold dark:text-gray-400">
                                 Rp {{ $product->price }}</p>
-                            <p class=" text-base mb-4 text-gray-500">{{ $product->description }}</p>
+
                             <form action="{{ route('cart.store', $product->id) }}" method="POST">
                                 @csrf
                                 <button type="submit"
@@ -362,9 +362,11 @@
                                         <path
                                             d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
                                     </svg>
-                                    Masukan Keranjang
+                                    Add to cart
                                 </button>
                             </form>
+                            <hr class="my-3 border-gray-300 dark:border-gray-800" />
+                            <p class=" text-base  text-gray-500">{{ $product->description }}</p>
                         </div>
                     </div>
 
@@ -373,9 +375,6 @@
         </div>
     @endforeach
     {{-- end detail produk --}}
-
-
-
 
 
 
