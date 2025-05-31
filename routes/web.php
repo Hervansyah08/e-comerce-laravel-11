@@ -2,16 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OngkirController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Landing\CartController;
 use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Landing\LandingController;
-use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +21,7 @@ Route::get('/test', function () {
     return view('test');
 });
 Route::get('/clear', function () {
-    // session()->forget('cart');
+    session()->forget('cart');
     session()->forget('ongkir');
     session()->forget('ekspedisi');
 });
@@ -74,9 +75,8 @@ Route::post('/auth/logout', [AuthController::class, 'logout'])
     ->middleware('auth');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('admin.dashboard');
 
     // Categories Management
     // jadi nanti semua route di dalam group ini memiliki awal categories
