@@ -26,6 +26,11 @@ class DashboardController extends Controller
             $totalCustomer = $this->dashboardService->totalCustomer();
             $inStock = $this->dashboardService->inStock();
             $lowStock = $this->dashboardService->lowStock();
+
+            $monthlyIncomeData = $this->dashboardService->getMonthlyIncomeData();
+
+            $monthlyIncomeLabels = $monthlyIncomeData['labels'];
+            $monthlyIncomeValues = $monthlyIncomeData['data'];
             return view('admin.dashboard', compact(
                 'totalSalesThisMonth',
                 'totalOrders',
@@ -34,6 +39,8 @@ class DashboardController extends Controller
                 'totalCustomer',
                 'inStock',
                 'lowStock',
+                'monthlyIncomeLabels',
+                'monthlyIncomeValues',
             ));
         } catch (Exception $e) {
             Log::error("Kesalahan di controller" . $e->getMessage());

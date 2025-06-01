@@ -104,4 +104,33 @@ class DashboardService
             throw new Exception("Terjadi kesalahan saat mengambil data produk dengan stok rendah");
         }
     }
+
+    public function getMonthlyIncomeData()
+    {
+        $tahun = date('Y');
+        $bulan = date('m');
+
+        $dataBulan = [];
+        $dataTotalPendapatan = [];
+
+        for ($i = 1; $i <= $bulan; $i++) {
+            $totalPendapatan = Order::whereMonth('created_at', $i)
+                ->whereYear('created_at', $tahun)
+                ->whereIn('status', [
+                    'dibayar',
+                    'sedang diproses',
+                    'dikirim',
+                    'terkirim',
+                ])
+                ->sum('total_price');
+
+            $dataBulan[] = Carbon::create()->month($i)->locale('id')->translatedFormat('F');
+            $dataTotalPendapatan[] = $totalPendapatan;
+        }
+
+        return [
+            'labels' => $dataBulan,
+            'data' => $dataTotalPendapatan,
+        ];
+    }
 }

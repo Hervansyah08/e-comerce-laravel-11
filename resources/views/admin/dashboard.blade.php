@@ -1,5 +1,57 @@
 @extends('layouts.layouts-admin')
 
+@section('js')
+    <script src="{{ asset('apexcharts/dist/apexcharts.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('apexcharts/dist/apexcharts.css') }}">
+    <script>
+        var options = {
+            series: [{
+                name: "Total Pendapatan Perbulan",
+                data: @json($monthlyIncomeValues)
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: 'Data Pendapatan Perbulan',
+                align: 'left'
+            },
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: @json($monthlyIncomeLabels),
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toLocaleString("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                        });
+                    }
+                },
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+@endsection
+
 @section('content')
     @if (session('success'))
         <x-notif-sukses> {{ session('success') }}</x-notif-sukses>
@@ -110,4 +162,5 @@
             <p class="text-xs text-gray-500 mt-1">Active this month: 0</p>
         </div>
     </div>
+    <div id="chart"></div>
 @endsection
