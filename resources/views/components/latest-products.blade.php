@@ -1,34 +1,44 @@
  <section class="py-12 bg-[#F5EBE0]">
      <div class="container mx-auto px-4">
-         <div class="flex justify-between items-center mb-8">
-             <h2 class="text-2xl font-bold">LATEST PRODUCTS</h2>
-             <a href="{{ route('produk') }}" class="text-blue-600 hover:underline">VIEW ALL</a>
-         </div>
-
-         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-             <!-- Product Card -->
-             @foreach ($products as $product)
-                 <div class="group relative ">
-                     <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full max-h-64 rounded-lg">
-                     <div
-                         class="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                         <button class="bg-white p-2 rounded-full shadow hover:bg-gray-100">
-                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                 viewBox="0 0 24 24">
-                                 <path fill-rule="evenodd"
-                                     d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
-                                     clip-rule="evenodd" />
-                             </svg>
-                         </button>
-
+         <section class="antialiased dark:bg-gray-900 ">
+             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+                 <!-- Heading & Filters -->
+                 <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
+                     <div>
+                         <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Latest Products
+                         </h2>
                      </div>
-                     <div class="mt-2 text-center">
-                         <h3 class="text-sm text-gray-700">{{ $product->name }}</h3>
-                         <p class="font-semibold">{{ $product->price }}</p>
+                     <div class="md:flex md:items-center md:space-x-4">
+                         <a href="{{ route('produk') }}" id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1"
+                             type="button"
+                             class="mt-3 md:mt-0 flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
+                             View All
+                         </a>
                      </div>
                  </div>
-             @endforeach
-         </div>
+                 <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+                     @foreach ($products as $product)
+                         <div
+                             class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                             <div class="h-56 w-full">
+                                 <a href="{{ route('produk') }}" class="cursor-pointer">
+                                     <img class="mx-auto h-full dark:hidden" src="{{ $product->image }}"
+                                         alt="{{ $product->name }}" />
+                                 </a>
+                             </div>
+                             <div class="pt-6 text-center">
+                                 <a href="{{ route('produk') }}"
+                                     class="cursor-pointer text-lg text-center font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ $product->name }}</a>
+                                 <div class="mt-2 ">
+                                     <p
+                                         class="text-xl text-center font-bold leading-tight text-gray-900 dark:text-white">
+                                         Rp {{ $product->price }}</p>
+                                 </div>
+                             </div>
+                         </div>
+                     @endforeach
+                 </div>
+             </div>
+         </section>
      </div>
  </section>
