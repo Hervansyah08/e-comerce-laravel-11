@@ -56,7 +56,7 @@
     @endif
 
 
-    <div class="container mx-auto p-6">
+    <div class="bg-[#edede9] container mx-auto p-6">
         <h1 class="text-2xl font-bold mb-6">Keranjang Belanja</h1>
         <div class="flex flex-col lg:flex-row gap-6">
             <div class="flex-1">
@@ -110,26 +110,26 @@
                 @if ($cart)
                     <div id="form-detail-pengiriman" class=" mt-4">
                         <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
-                        {{-- <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
-                            @csrf --}}
-                        <form>
-                            <div class="grid md:grid-cols-2 md:gap-6 mb-4">
-                                <input type="text" id="nama" name="nama"
-                                    class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
-                                    placeholder="Masukkan Nama Lengkap" required />
-                                <input type="text" id="telepon" name="telepon"
-                                    class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
-                                    placeholder="Masukkan nomor telepon" required />
-                            </div>
-                            <textarea id="alamat" rows="4" name="alamat"
-                                class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Detail Alamat (Cth:Blok)"></textarea>
-                            {{-- @if (session('ongkir'))
-                                <button id="pay-button"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lanjutkan
-                                    Pembayaran</button>
-                            @endif --}}
-                        </form>
+                        <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+                            @csrf
+                            <form>
+                                <div class="grid md:grid-cols-2 md:gap-6 mb-4">
+                                    <input type="text" id="nama" name="nama"
+                                        class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
+                                        placeholder="Masukkan Nama Lengkap" required />
+                                    <input type="text" id="telepon" name="telepon"
+                                        class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
+                                        placeholder="Masukkan nomor telepon" required />
+                                </div>
+                                <textarea id="alamat" rows="4" name="alamat"
+                                    class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Detail Alamat (Cth:Blok)"></textarea>
+                                @if (session('ongkir'))
+                                    <button id="pay-button"
+                                        class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lanjutkan
+                                        Pembayaran</button>
+                                @endif
+                            </form>
                     </div>
                 @endif
             </div>
@@ -195,20 +195,20 @@
                                     </button>
                                 </form>
 
-                                <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+                                {{-- <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
                                     @csrf
                                     <button id="pay-button"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-full">
                                         Lanjutkan Pembayaran
                                     </button>
-                                </form>
+                                </form> --}}
                             </div>
                         @endif
                     @endguest
 
                 </div>
                 @if (session('ongkir'))
-                    <div class="flex items-center text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    <div class="flex items-center mt-4 text-sm text-red-800 rounded-lg bg-[#edede9] dark:bg-gray-800 dark:text-red-400"
                         role="alert">
                         <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor" viewBox="0 0 20 20">
