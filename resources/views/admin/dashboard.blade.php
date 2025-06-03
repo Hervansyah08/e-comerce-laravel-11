@@ -71,7 +71,7 @@
                             d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                     </svg>
 
-                    <h3 class="text-sm text-gray-500">Sales this month</h3>
+                    <h3 class="text-sm text-gray-500">This month's income</h3>
                 </div>
             </div>
             <p class="text-xl font-semibold">Rp {{ number_format($totalSalesThisMonth, 0, ',', '.') }}</p>
@@ -159,7 +159,7 @@
                 </div>
             </div>
             <p class="text-xl font-semibold">{{ $totalCustomer }}</p>
-            <p class="text-xs text-gray-500 mt-1">Active this month: 0</p>
+            <p class="text-xs text-gray-500 mt-1">Active this month: {{ $Activethismonth }}</p>
         </div>
     </div>
     <div id="chart"></div>

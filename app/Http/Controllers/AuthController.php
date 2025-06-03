@@ -96,6 +96,8 @@ class AuthController extends Controller
                 $request->session()->regenerate(); // Regenerasi ID sesi
 
                 $user = Auth::user();
+
+                $user->touch(); // ini akan mengupdate kolom updated_at
                 $redirectTo = $user->hasRole('admin') ? route('admin.dashboard') : route('home');
 
                 // Fungsi ini akan mengarahkan pengguna ke halaman yang sebelumnya mereka coba akses sebelum login, kayak sebelumnya berada di route dasboard
@@ -123,6 +125,11 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
+            $user = Auth::user();
+            if ($user) {
+                $user->touch(); // update updated_at saat logout
+            }
+
             Auth::logout();
 
             $request->session()->invalidate(); //untuk menghapus semua data sesi dan membuat sesi saat ini menjadi tidak valid

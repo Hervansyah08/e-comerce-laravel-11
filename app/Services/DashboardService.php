@@ -73,7 +73,8 @@ class DashboardService
     public function totalCustomer()
     {
         try {
-            return User::count();
+            return User::role('user')
+                ->count();
         } catch (Exception $e) {
             Log::warning("Gagal mengambil data total customer:" . $e->getMessage());
             throw new Exception("Terjadi kesalahan saat mengambil data total customer");
@@ -132,5 +133,18 @@ class DashboardService
             'labels' => $dataBulan,
             'data' => $dataTotalPendapatan,
         ];
+    }
+
+    public function Activethismonth()
+    {
+        try {
+            return User::whereMonth('updated_at', Carbon::now()->month)
+                ->whereYear('updated_at', Carbon::now()->year)
+                ->role('user')
+                ->count();
+        } catch (Exception $e) {
+            Log::warning("Gagal mengambil data total customer yang aktif bulan ini:" . $e->getMessage());
+            throw new Exception("Terjadi kesalahan saat mengambil data total customer  yang aktif bulan ini");
+        }
     }
 }
