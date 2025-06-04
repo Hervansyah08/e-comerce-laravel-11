@@ -340,6 +340,9 @@
                                                     Produk
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
+                                                    Berat
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
                                                     Harga
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
@@ -357,6 +360,10 @@
                                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         {{ $item->product->name }}
                                                     </th>
+                                                    <th scope="row"
+                                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                        {{ $item->product->berat }} gram
+                                                    </th>
                                                     <td class="px-6 py-4">
                                                         Rp {{ number_format($item->price, 0, ',', '.') }}
                                                     </td>
@@ -369,10 +376,28 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
+                                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <th scope="row"
+                                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    Ongkir
+                                                </th>
+                                                <th scope="row"
+                                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                </th>
+                                                <td class="px-6 py-4">
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    Rp
+                                                    {{ number_format($order->ongkir->biaya ?? 0, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
                                         </tbody>
                                         <tfoot>
                                             <tr class="font-bold text-gray-900 dark:text-white">
                                                 <th scope="row" class="px-6 py-3 text-base">Total Harga</th>
+                                                <td class="px-6 py-3"></td>
                                                 <td class="px-6 py-3"></td>
                                                 <td class="px-6 py-3"></td>
                                                 <td class="px-6 py-3">Rp

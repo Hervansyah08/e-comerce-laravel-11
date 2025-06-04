@@ -104,6 +104,9 @@
                         Role
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Terakhir Aktif
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Aksi
                     </th>
                 </tr>
@@ -127,6 +130,9 @@
                             <span
                                 class="bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
                                 User</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $user->updated_at->diffForHumans() }}
                         </td>
                         <td class="px-6 py-4">
                             <div class="inline-flex rounded-md shadow-sm" role="group">
