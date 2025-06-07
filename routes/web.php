@@ -13,12 +13,13 @@ use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Landing\LandingController;
+use App\Http\Controllers\StoreController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-Route::get('/test', function () {
-    return view('test');
+Route::get('/coba', function () {
+    return view('coba');
 });
 Route::get('/clear', function () {
     session()->forget('cart');
@@ -109,6 +110,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
             ->name('admin.orders.index');
         Route::put('/{order}/status', [OrdersController::class, 'updateStatus'])
             ->name('admin.orders.update-status');
+        Route::get('/{order}/print-pdf', [OrdersController::class, 'printPdf'])->name('orders.print.pdf');
     });
 
     // Order History
@@ -125,5 +127,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
         //     ->name('admin.products.update');
         Route::delete('/{user}', [UserController::class, 'destroy'])
             ->name('admin.user.destroy');
+    });
+
+    Route::prefix('store')->group(function () {
+        Route::get('/', [StoreController::class, 'index'])
+            ->name('admin.store.index');
+        Route::post('/', [StoreController::class, 'store'])
+            ->name('admin.store.store');
+        Route::put('/{store}', [StoreController::class, 'update'])
+            ->name('admin.store.update');
+        Route::delete('/{store}', [StoreController::class, 'destroy'])
+            ->name('admin.store.destroy');
     });
 });
