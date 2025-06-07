@@ -117,6 +117,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/history-order', [OrderHistoryController::class, 'index'])
         ->name('admin.history.index');
     Route::patch('/history-order/{order}/received', [OrderHistoryController::class, 'orderReceived'])->name('orders.received');
+    Route::patch('/history-order/{order}/cancel', [OrderHistoryController::class, 'cancelOrder'])->name('orders.cancelOrder');
 
 
     // user Management

@@ -62,4 +62,20 @@ class OrderHistoryController extends Controller
             return back()->with('error', 'Gagal mengubah status pesanan: ' . $e->getMessage());
         }
     }
+    public function cancelOrder(Order $order)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order->status = 'dibatalkan';
+            $order->save();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Pesanan Dibatalkan');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Gagal membatalkan pesanan: " . $e->getMessage());
+            return back()->with('error', 'Gagal membatalkan pesanan: ' . $e->getMessage());
+        }
+    }
 }

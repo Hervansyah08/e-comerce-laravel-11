@@ -281,11 +281,25 @@
                                     </div>
 
                                 </div>
-                                <button type="submit" data-modal-hide="order-detail-{{ $order->id }}"
-                                    style="margin-left: 38rem"
-                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Tutup
-                                </button>
+                                @if ($order->status == 'Menunggu pembayaran')
+                                    <div class="flex justify-between items-center mt-4">
+                                        <!-- Tombol kiri -->
+
+                                        <form action="{{ route('orders.cancelOrder', $order->id) }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit"
+                                                class="text-white inline-flex items-center bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                                Batalkan Pesanan
+                                            </button>
+                                        </form>
+                                        <!-- Tombol kanan -->
+                                        <button type="submit" data-modal-hide="order-detail-{{ $order->id }}"
+                                            class="text-white inline-flex items-center bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Lanjutkan Pembayaran
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
