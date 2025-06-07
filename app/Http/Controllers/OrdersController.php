@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Order;
+use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrdersController extends Controller
 {
@@ -79,5 +81,18 @@ class OrdersController extends Controller
             Log::error("Gagal mengubah status pesanan: " . $e->getMessage());
             return back()->with('error', 'Gagal mengubah status pesanan: ' . $e->getMessage());
         }
+    }
+    public function printPdf(Order $order)
+    {
+        // Ambil data toko pertama (asumsi hanya ada 1 toko)
+        $store = Store::select('id', 'name', 'address', 'phone')->first();
+
+        // Kirim data order dan store ke view PDF
+        $pdf = Pdf::loadView('admin.orders.print_pdf', [
+            'order' => $order,
+            'store' => $store,
+        ]);
+
+        return $pdf->stream('detail-pesanan-' . $order->order_code . '.pdf');
     }
 }

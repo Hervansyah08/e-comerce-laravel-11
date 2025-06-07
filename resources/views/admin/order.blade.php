@@ -192,6 +192,22 @@
                                             d="M19.128 6.241l-4.365-4.365" />
                                     </svg>
                                 </button>
+
+                                <a href="{{ route('orders.print.pdf', $order->id) }}"
+                                    class="p-2 text-purple-500 bg-transparent
+                                    border border-purple-500 rounded-lg hover:bg-purple-500 hover:text-white focus:ring-2 focus:text-white
+                                    focus:ring-purple-400 focus:bg-purple-500"
+                                    title="Export PDF">
+                                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                        class="w-5 h-5">
+                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                        <line x1="16" y1="13" x2="8" y2="13" />
+                                        <line x1="16" y1="17" x2="8" y2="17" />
+                                        <polyline points="10 9 9 9 8 9" />
+                                    </svg>
+                                </a>
+
                             </div>
 
                         </td>
