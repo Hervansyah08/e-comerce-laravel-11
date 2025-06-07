@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderHistoryController extends Controller
@@ -41,6 +43,23 @@ class OrderHistoryController extends Controller
             // Catat error ke log dan tampilkan pesan kesalahan
             Log::error("Gagal mengambil data order: " . $e->getMessage());
             return back()->withErrors('Gagal memuat data pesanan: ' . $e->getMessage());
+        }
+    }
+
+    public function orderReceived(Order $order)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order->status = 'terkirim';
+            $order->save();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Pesanan Diterima');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Gagal mengubah status pesanan: " . $e->getMessage());
+            return back()->with('error', 'Gagal mengubah status pesanan: ' . $e->getMessage());
         }
     }
 }

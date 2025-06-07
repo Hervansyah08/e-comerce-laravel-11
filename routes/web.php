@@ -116,6 +116,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // Order History
     Route::get('/history-order', [OrderHistoryController::class, 'index'])
         ->name('admin.history.index');
+    Route::patch('/history-order/{order}/received', [OrderHistoryController::class, 'orderReceived'])->name('orders.received');
+
 
     // user Management
     Route::prefix('users')->group(function () {
