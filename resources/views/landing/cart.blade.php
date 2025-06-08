@@ -235,12 +235,23 @@
         </script>
         <script>
             const paymentForm = document.getElementById('payment-form');
+            const payButton = document.getElementById('pay-button');
+
+            let savedSnapToken = null;
+            let paymentStarted = false;
+
             paymentForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+
+                // Jika pembayaran sudah dimulai, gunakan kembali snap_token tanpa submit ulang
+                if (paymentStarted && savedSnapToken) {
+                    launchMidtrans(savedSnapToken);
+                    return;
+                }
+
                 const formData = new FormData(paymentForm);
 
                 try {
-                    // Kirim request untuk mendapatkan Snap Token
                     const response = await fetch('/checkout/process', {
                         method: 'POST',
                         headers: {
@@ -252,49 +263,9 @@
                     const result = await response.json();
 
                     if (result.snap_token) {
-                        // Menampilkan popup Midtrans
-                        snap.pay(result.snap_token, {
-                            onSuccess: async function(result) {
-
-                                // Data untuk memperbarui status order
-                                const orderData = {
-                                    order_id: result.order_id, // Dari respons Midtrans
-                                    transaction_id: result.transaction_id, // Dari respons Midtrans
-                                    payment_type: result.payment_type, // Dari respons Midtrans
-                                    status: 'dibayar' // Karena pembayaran berhasil
-                                };
-
-                                // Update status order melalui backend
-                                const updateResponse = await fetch('/checkout/update-status', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    },
-                                    body: JSON.stringify(orderData)
-                                });
-
-                                const updateResult = await updateResponse.json();
-                                if (updateResponse.ok) {
-                                    window.location.href =
-                                        '{{ route('home') }}'; // Arahkan ke halaman home
-                                } else {
-                                    alert('Error: ' + updateResult.message); // Tampilkan error jika ada
-                                }
-                            },
-                            onPending: function(result) {
-                                alert('Menunggu pembayaran...');
-                                console.log('Pending Payment:', result);
-                            },
-                            onError: function(result) {
-                                alert('Pembayaran gagal: ' + result.status_message);
-                                console.log('Payment Error:', result);
-                            },
-                            onClose: function() {
-                                window.location.href =
-                                    '{{ route('home') }}'; // Arahkan ke halaman riwayat pesanan
-                            }
-                        });
+                        savedSnapToken = result.snap_token; // Simpan token
+                        paymentStarted = true;
+                        launchMidtrans(savedSnapToken);
                     } else {
                         alert('Terjadi kesalahan: ' + result.error);
                     }
@@ -304,6 +275,47 @@
                 }
             });
 
+            function launchMidtrans(token) {
+                snap.pay(token, {
+                    onSuccess: async function(result) {
+                        const orderData = {
+                            order_id: result.order_id,
+                            transaction_id: result.transaction_id,
+                            payment_type: result.payment_type,
+                            status: 'dibayar'
+                        };
+
+                        const updateResponse = await fetch('/checkout/update-status', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify(orderData)
+                        });
+
+                        const updateResult = await updateResponse.json();
+                        if (updateResponse.ok) {
+                            window.location.href = '{{ route('home') }}';
+                        } else {
+                            alert('Error: ' + updateResult.message);
+                        }
+                    },
+                    onPending: function(result) {
+                        alert('Menunggu pembayaran...');
+                        console.log('Pending Payment:', result);
+                    },
+                    onError: function(result) {
+                        alert('Pembayaran gagal: ' + result.status_message);
+                        console.log('Payment Error:', result);
+                    },
+                    onClose: function() {
+                        // Disable semua input di form
+                        const inputs = paymentForm.querySelectorAll('input, textarea');
+                        inputs.forEach(input => input.disabled = true);
+                    }
+                });
+            }
 
 
             document.addEventListener('DOMContentLoaded', () => {
