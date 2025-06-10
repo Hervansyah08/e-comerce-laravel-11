@@ -294,9 +294,9 @@
                                             </button>
                                         </form>
                                         <!-- Tombol kanan -->
-                                        <button type="submit" data-modal-hide="order-detail-{{ $order->id }}"
-                                            class="text-white inline-flex items-center bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                            Lanjutkan Pembayaran
+                                        <button data-snap-token="{{ $order->snap_token }}"
+                                            class="bayar-btn text-white inline-flex items-center bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Bayar
                                         </button>
                                     </div>
                                 @endif
@@ -360,4 +360,53 @@
             </div>
         </div>
     @endforeach
+
+    @section('scripts')
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
+        </script>
+        <script>
+            document.querySelectorAll('.bayar-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const snapToken = this.dataset.snapToken;
+
+                    snap.pay(snapToken, {
+                        onSuccess: async function(result) {
+                            // Kirim update ke backend
+                            const response = await fetch('/checkout/update-status', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    order_id: result.order_id,
+                                    transaction_id: result.transaction_id,
+                                    payment_type: result.payment_type,
+                                    status: 'dibayar'
+                                })
+                            });
+
+                            const resJson = await response.json();
+                            if (response.ok) {
+
+                                location.reload();
+                            } else {
+                                alert('Gagal memperbarui status order: ' + resJson.message);
+                            }
+                        },
+                        onPending: function(result) {
+
+                        },
+                        onError: function(result) {
+                            alert('Pembayaran gagal: ' + result.status_message);
+                        },
+                        onClose: function() {
+
+                        }
+                    });
+                });
+            });
+        </script>
+    @endsection
+
 @endsection
