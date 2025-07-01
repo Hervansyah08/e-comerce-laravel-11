@@ -11,7 +11,7 @@
 
 </head>
 
-<body>
+<body class="bg-[#edede9]">
     @include('components.navbar')
 
     {{-- content --}}
@@ -22,8 +22,6 @@
     @yield('content')
     {{-- end content --}}
 
-
-    @include('components.footer')
 
     @yield('scripts')
 </body>

@@ -1,7 +1,7 @@
 {{-- ini untuk menampilkan semua produk di user atau dari landingcontroller dengan route name produk --}}
 @extends('layouts.layouts-landing')
 
-@section('title', 'E-Commerce')
+@section('title', 'RD Iphone House')
 
 @section('content')
     @if (session('success'))

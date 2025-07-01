@@ -97,8 +97,8 @@
             <!-- Order Status Boxes -->
             <div class="grid grid-cols-3 gap-2 mt-3 text-center text-xs">
                 <div class="bg-gray-100 p-2 rounded">
-                    <div class="text-gray-500 font-medium">Paid</div>
-                    <div class="text-gray-900 text-sm font-semibold">{{ $orderStatus['paid'] }}</div>
+                    <div class="text-gray-500 font-medium">Pending</div>
+                    <div class="text-gray-900 text-sm font-semibold">{{ $orderStatus['pending'] }}</div>
                 </div>
                 <div class="bg-gray-100 p-2 rounded">
                     <div class="text-gray-500 font-medium">Processing</div>

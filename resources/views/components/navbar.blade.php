@@ -4,12 +4,13 @@
 
              <div class="flex items-center space-x-8">
                  <div class="shrink-0">
-                     <a href="#" title="" class="">
-                         <img class="block w-auto h-8 dark:hidden"
+                     <a href="{{ route('home') }}" title="" class="">
+                         <x-logo class="block w-auto h-16  " />
+                         {{-- <img class="block w-auto h-8 dark:hidden"
                              src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full.svg" alt="">
                          <img class="hidden w-auto h-8 dark:block"
                              src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full-dark.svg"
-                             alt="">
+                             alt=""> --}}
                      </a>
                  </div>
 
@@ -32,18 +33,13 @@
                              Product
                          </a>
                      </li>
-                     {{-- <li class="shrink-0">
-                            <a href="#" title=""
-                                class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
-                                Today's Deals
-                            </a>
-                        </li>
-                        <li class="shrink-0">
-                            <a href="#" title=""
-                                class="text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
-                                Sell
-                            </a>
-                        </li> --}}
+                     <li class="shrink-0">
+                         <a href="{{ route('home') }}#dropdownHoverButton" title=""
+                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+                             Contact
+                         </a>
+                     </li>
+
                  </ul>
              </div>
 
@@ -154,15 +150,11 @@
                      <a href="{{ route('produk') }}"
                          class="hover:text-primary-700 dark:hover:text-primary-500">Product</a>
                  </li>
-                 {{-- <li>
-                        <a href="#" class="hover:text-primary-700 dark:hover:text-primary-500">Games</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:text-primary-700 dark:hover:text-primary-500">Electronics</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:text-primary-700 dark:hover:text-primary-500">Home & Garden</a>
-                    </li> --}}
+                 <li>
+                     <a href="{{ route('home') }}#dropdownHoverButton"
+                         class="hover:text-primary-700 dark:hover:text-primary-500">Contact</a>
+                 </li>
+
              </ul>
          </div>
      </div>

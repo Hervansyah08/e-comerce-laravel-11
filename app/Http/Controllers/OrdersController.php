@@ -19,7 +19,7 @@ class OrdersController extends Controller
             // Ambil data pesanan dengan filter pencarian dan status
             $orders = Order::query()
                 ->with(['user', 'orderItems.product', 'ongkir']) // Relasi pengguna dan produk
-                ->whereIn('status', ['dibayar', 'sedang diproses', 'dikirim']) // Filter status
+                ->whereIn('status', ['pending', 'dibayar', 'sedang diproses', 'dikirim']) // Filter status
                 ->when($request->search, function ($query, $search) {
                     $query->where('order_code', 'like', "%{$search}%")
                         ->orWhere('alamat_pengiriman', 'like', "%{$search}%")
@@ -30,7 +30,7 @@ class OrdersController extends Controller
                         });
                 })
                 ->when($request->status, function ($query, $status) {
-                    if (in_array($status, ['dibayar', 'sedang diproses', 'dikirim'])) {
+                    if (in_array($status, ['pending', 'dibayar', 'sedang diproses', 'dikirim'])) {
                         $query->where('status', $status);
                     }
                 })

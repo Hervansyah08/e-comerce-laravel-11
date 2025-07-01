@@ -70,7 +70,7 @@
                     <select name="status" id="status"
                         class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         <option value="">Semua Status</option>
-                        @foreach (['dibayar', 'sedang diproses', 'dikirim'] as $status)
+                        @foreach (['pending', 'dibayar', 'sedang diproses', 'dikirim'] as $status)
                             <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
                                 {{ (new \App\Models\Order(['status' => $status]))->status }}
                             </option>
@@ -100,7 +100,7 @@
 
         {{-- tabel --}}
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-center text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Kode Pesanan
@@ -134,13 +134,14 @@
             <tbody>
                 @php
                     $statusBadgeClasses = [
+                        'Menunggu pembayaran' => ' text-red-800   dark:text-blue-300',
                         'Sudah melakukan pembayaran' => ' text-blue-800   dark:text-blue-300',
                         'Pesanan sedang diproses' => 'text-orange-800 dark:text-orange-300',
                         'Pesanan sedang dikirim' => 'text-indigo-800 dark:text-indigo-300',
                     ];
                 @endphp
                 @forelse($orders as $order)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr class="bg-white border-b text-center dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $order->order_code }}
                         </th>
@@ -154,7 +155,7 @@
                             {{ $order->status }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $order->midtrans_payment_type }}
+                            {{ $order->midtrans_payment_type ?? '-' }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $order->created_at->format('d M Y H:i') }}

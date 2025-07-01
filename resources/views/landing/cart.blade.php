@@ -1,6 +1,6 @@
 @extends('layouts.layouts-landing')
 
-@section('title', 'E-Commerce')
+@section('title', 'RD Iphone House')
 
 @section('content')
     @if (session('success'))

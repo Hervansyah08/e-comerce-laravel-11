@@ -1,6 +1,6 @@
 @extends('layouts.layouts-landing')
 
-@section('title', 'E-Commerce')
+@section('title', 'RD Iphone House')
 
 @section('content')
     <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 mb-6">

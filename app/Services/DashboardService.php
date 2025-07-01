@@ -50,7 +50,7 @@ class DashboardService
     {
         try {
             $orderStatus = [
-                'paid' => Order::where('status', 'dibayar')->count(),
+                'pending' => Order::where('status', 'pending')->count(),
                 'processing' => Order::where('status', 'sedang diproses')->count(),
                 'completed' => Order::where('status', 'terkirim')->count(),
             ];
