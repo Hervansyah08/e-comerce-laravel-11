@@ -14,6 +14,8 @@ use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\StoreController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,12 +32,12 @@ Route::get('/session-all', function () {
     return session()->all();
 });
 
-Route::get('/produk', [LandingController::class, 'product'])->name('produk');
+Route::get('/produk', [LandingController::class, 'product'])->name('produk')->middleware('verified');
 
 
 Route::middleware(['auth'])->group(function () {
     // riwayat pesanan
-    Route::get('/orders/history', [UserOrderController::class, 'index'])->name('user.orders.history');
+    Route::get('/orders/history', [UserOrderController::class, 'index'])->name('user.orders.history')->middleware('verified');
 
     // Checkout Routes
     Route::post('/checkout/process', [CheckoutController::class, 'process'])
@@ -48,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
 // cart'
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/', [CartController::class, 'index'])->name('cart.index')->middleware('verified');
     Route::post('/store/{product}', [CartController::class, 'store'])->name('cart.store');
     Route::post('/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
@@ -74,6 +76,22 @@ Route::middleware('guest')->group(function () {
 Route::post('/auth/logout', [AuthController::class, 'logout'])
     ->name('auth.logout')
     ->middleware('auth');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill(); // untuk mengisi kolom email verived at di tabel user
+
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])

@@ -49,16 +49,15 @@ class AuthController extends Controller
                     'password' => bcrypt($validated['password']),
                 ]);
                 $user->assignRole('user');
+                // untuk langsung login pengguna setelah pendaftaran berhasil.
+                Auth::login($user);
 
                 // memicu event Registered setelah pengguna berhasil dibuat. kayak verifikasi email
                 event(new Registered($user));
 
-                // untuk langsung login pengguna setelah pendaftaran berhasil.
-                Auth::login($user);
-
                 DB::commit();
 
-                return redirect()->route('home')
+                return redirect()->route('verification.notice')
                     ->with('success', 'Account created successfully! Welcome ' . $user->name);
             } catch (QueryException $e) { //subclass dari Exception yang spesifik untuk kesalahan database.
                 DB::rollBack(); // Membatalkan semua perubahan yang sudah dilakukan di database.
