@@ -109,10 +109,10 @@
                 {{-- informasi pengiriman --}}
                 @if ($cart)
                     <div id="form-detail-pengiriman" class=" mt-4">
-                        <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
-                        <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
-                            @csrf
-                            <form>
+                        @if (session('ongkir'))
+                            <h1 class="text-xl mb-3">Informasi Pengiriman</h1>
+                            <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+                                @csrf
                                 <div class="grid md:grid-cols-2 md:gap-6 mb-4">
                                     <input type="text" id="nama" name="nama"
                                         class="block w-full p-2 mt-2 border border-gray-300 rounded-lg"
@@ -124,12 +124,12 @@
                                 <textarea id="alamat" rows="4" name="alamat"
                                     class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Detail Alamat (Cth:Blok)"></textarea>
-                                @if (session('ongkir'))
-                                    <button id="pay-button"
-                                        class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lanjutkan
-                                        Pembayaran</button>
-                                @endif
-                            </form>
+
+                                <button id="pay-button"
+                                    class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Lanjutkan
+                                    Pembayaran</button>
+                        @endif
+                        </form>
                     </div>
                 @endif
             </div>

@@ -10,6 +10,9 @@
         <x-notif-sukses> {{ session('success') }}</x-notif-sukses>
     @endif
 
+    <x-order-notification-user />
+
+
     {{-- hero --}}
     @include('components.hero')
 

@@ -51,8 +51,11 @@ class DashboardService
         try {
             $orderStatus = [
                 'pending' => Order::where('status', 'pending')->count(),
+                'paid' => Order::where('status', 'dibayar')->count(),
                 'processing' => Order::where('status', 'sedang diproses')->count(),
+                'send'  => Order::where('status', 'dikirim')->count(),
                 'completed' => Order::where('status', 'terkirim')->count(),
+                'canceled' => Order::where('status', 'dibatalkan')->count(),
             ];
             return $orderStatus;
         } catch (Exception $e) {
