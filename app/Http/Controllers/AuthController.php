@@ -92,18 +92,22 @@ class AuthController extends Controller
 
             // $request->boolean('remember') ini buat fitur remember, jadi ketika di centang fitur nya mengirim true
             if (Auth::attempt($credentials, $request->boolean('remember'))) {
-                $request->session()->regenerate(); // Regenerasi ID sesi
+                $request->session()->regenerate();
 
                 $user = Auth::user();
 
-                $user->touch(); // ini akan mengupdate kolom updated_at
+                if (is_null($user->email_verified_at)) {
+                    Auth::logout();
+                    return redirect()->route('verification.notice')->with('error', 'Please verify your email first.');
+                }
+
+                $user->touch();
+
                 $redirectTo = $user->hasRole('admin') ? route('admin.dashboard') : route('home');
 
-                // Fungsi ini akan mengarahkan pengguna ke halaman yang sebelumnya mereka coba akses sebelum login, kayak sebelumnya berada di route dasboard
-                // Jika tidak ada halaman sebelumnya, pengguna diarahkan ke redirectTo
-                return redirect()->intended($redirectTo)
-                    ->with('success', 'Welcome back, ' . $user->name . ' !'); // memberikan pesan
+                return redirect()->intended($redirectTo)->with('success', 'Welcome back, ' . $user->name . '!');
             }
+
 
             // untuk memberikan pesan error khusus di bagian field email ketika proses autentikasi gagal.
             throw ValidationException::withMessages([
