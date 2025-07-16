@@ -15,6 +15,8 @@ class Order extends Model
         'user_id',
         'total_price',
         'status',
+        'rating',
+        'ulasan',
         'alamat_pengiriman',
         'midtrans_transaction_id',
         'midtrans_payment_type',

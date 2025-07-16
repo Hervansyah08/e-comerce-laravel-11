@@ -22,6 +22,10 @@
     {{-- lates produk --}}
     <x-latest-products></x-latest-products>
 
+    <x-ulasan-list></x-ulasan-list>
+
+
+
     @include('components.footer')
 
 

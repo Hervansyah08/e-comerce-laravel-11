@@ -37,12 +37,14 @@ Route::get('/session-all', function () {
     return session()->all();
 });
 
-Route::get('/produk', [LandingController::class, 'product'])->name('produk')->middleware('verified');
+Route::get('/produk', [LandingController::class, 'product'])->name('produk');
 
 
 Route::middleware(['auth'])->group(function () {
     // riwayat pesanan
     Route::get('/orders/history', [UserOrderController::class, 'index'])->name('user.orders.history')->middleware('verified');
+
+
 
     // Checkout Routes
     Route::post('/checkout/process', [CheckoutController::class, 'process'])
@@ -55,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
 // cart'
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index')->middleware('verified');
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/store/{product}', [CartController::class, 'store'])->name('cart.store');
     Route::post('/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
@@ -145,6 +147,18 @@ Route::post('/reset-password', function (Request $request) {
         : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
 
+// Order History
+Route::get('/history-order', [OrderHistoryController::class, 'index'])
+    ->name('admin.history.index')->middleware('auth');
+Route::patch('/history-order/{order}/received', [OrderHistoryController::class, 'orderReceived'])->name('orders.received')->middleware('auth');
+Route::patch('/history-order/{order}/cancel', [OrderHistoryController::class, 'cancelOrder'])->name('orders.cancelOrder')->middleware('auth');
+Route::get('/ulasan/{order}', [OrderHistoryController::class, 'edit'])->name('ulasan.edit');
+Route::put('/ulasan/{order}', [OrderHistoryController::class, 'updateUlasan'])->name('ulasan.update');
+Route::get('/detail-ulasan/{order}', [OrderHistoryController::class, 'detailUlasan'])->name('detail.ulasan');
+
+
+
+
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
@@ -183,13 +197,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
         Route::get('/{order}/print-pdf', [OrdersController::class, 'printPdf'])->name('orders.print.pdf');
     });
 
-    // Order History
-    Route::get('/history-order', [OrderHistoryController::class, 'index'])
-        ->name('admin.history.index');
-    Route::patch('/history-order/{order}/received', [OrderHistoryController::class, 'orderReceived'])->name('orders.received');
-    Route::patch('/history-order/{order}/cancel', [OrderHistoryController::class, 'cancelOrder'])->name('orders.cancelOrder');
-
-
     // user Management
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])
@@ -202,6 +209,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
             ->name('admin.user.destroy');
     });
 
+    // management profil toko
     Route::prefix('store')->group(function () {
         Route::get('/', [StoreController::class, 'index'])
             ->name('admin.store.index');

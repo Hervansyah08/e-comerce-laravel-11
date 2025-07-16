@@ -78,4 +78,39 @@ class OrderHistoryController extends Controller
             return back()->with('error', 'Gagal membatalkan pesanan: ' . $e->getMessage());
         }
     }
+
+    public function edit(Order $order) //menggunakan route model binding
+    {
+        try {
+            return view('landing.ulasan', compact('order'));
+        } catch (\Exception $e) {
+            Log::channel('program')->error('Error loading Ulasan form: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat form ulasan.');
+        }
+    }
+
+    public function updateUlasan(Request $request, Order $order)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'ulasan' => 'required|string|max:1000',
+        ]);
+
+        $order->update([
+            'rating' => $request->rating,
+            'ulasan' => $request->ulasan,
+        ]);
+
+        return redirect()->route('user.orders.history')->with('success', 'Ulasan berhasil dikirim.');
+    }
+
+    public function detailUlasan(Order $order) //menggunakan route model binding
+    {
+        try {
+            return view('landing.detail-ulasan', compact('order'));
+        } catch (\Exception $e) {
+            Log::channel('program')->error('Error loading Detail Ulasan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat detail ulasan.');
+        }
+    }
 }
