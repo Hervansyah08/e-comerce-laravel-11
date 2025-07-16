@@ -49,9 +49,9 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No
-                                HP</label>
-                            <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
+                            {{-- <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No
+                                HP</label> --}}
+                            <input type="hidden" name="phone" id="phone" value="-"
                                 class="@error('phone') border-red-500 @enderror bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="08" required="">
                             @error('phone')
@@ -59,9 +59,9 @@
                             @enderror
                         </div>
                         <div>
-                            <label for="address"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                            <input type="text" name="address" id="address" value="{{ old('address') }}"
+                            {{-- <label for="address"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label> --}}
+                            <input type="hidden" name="address" id="address" value="-"
                                 class="@error('address') border-red-500 @enderror bg-gray-50 border text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Jl." required="">
                             @error('address')
