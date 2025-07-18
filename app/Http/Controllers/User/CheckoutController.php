@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Mail\PembayaranBerhasilMail;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -184,6 +186,10 @@ class CheckoutController extends Controller
                 'midtrans_transaction_id' => $request->transaction_id,
                 'midtrans_payment_type' => $request->payment_type
             ]);
+
+            if ($request->status === 'dibayar') {
+                Mail::to($order->user->email)->send(new PembayaranBerhasilMail($order));
+            }
 
             DB::commit();
 
